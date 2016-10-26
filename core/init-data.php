@@ -1,22 +1,54 @@
 <?php 
-
-	// Plugin Folder URL
-	if ( ! defined( 'AMENITY_URL' ) )
-		define( 'AMENITY_URL', plugin_dir_url( __FILE__ ) );
-
 	// enqueue scripts and styles
 	add_action('wp_enqueue_scripts', 'am_add_scripts');
 	function am_add_scripts() {
-		wp_register_style( 'amenities-map-style', AMENITY_URL.'assets/css/main.css' );
-		wp_register_script('amenities-map-script', AMENITY_URL.'assets/js/main.js');
-		wp_register_script('infobox', AMENITY_URL.'assets/js/infobox.js');
+		$maps_api_key = get_option('am_gm_api_key');
 
-		wp_localize_script('amenities-map-script', 'AMENITIES', array( 'data' => get_post_amenities(), 'theme_url' => AMENITY_URL ) );
+ 		wp_register_script('google-maps', 'https://maps.googleapis.com/maps/api/js?&libraries=places&key='.$maps_api_key );
+        wp_enqueue_script('google-maps');
+
+		wp_register_style( 'amenities-map-style', AMENITY_URL.'/assets/css/styles.css' );
+
+		wp_register_script('amenities-map-script', AMENITY_URL.'/assets/js/map.js', array('jquery'));
+		wp_register_script('infobox', AMENITY_URL.'/assets/js/infobox.js');
+
+		wp_localize_script('amenities-map-script', 'AMENITIES', array( 'data' => get_post_amenities(), 'categories' => get_amenity_categories(), 'theme_url' => AMENITY_URL, 'infobox_display' => get_infobox_display_options(), 'primary_location' => get_primary_location(), 'primary_location_icon' => get_option('am_primary_location_icon'), 'active_icon' => get_option('am_active_icon'), 'maps_api_key' => $maps_api_key, 'map_styles' => get_map_styles() ) );
 
 		wp_enqueue_script('amenities-map-script');
 		wp_enqueue_script('infobox');
 		wp_enqueue_style('amenities-map-style');
 	}
+
+	// enqueue and add admin scripts
+	function load_admin_scripts() {
+		$maps_api_key = get_option('am_gm_api_key');
+
+		wp_enqueue_script('admin-google-maps', 'https://maps.googleapis.com/maps/api/js?key='.$maps_api_key.'&libraries=places&callback=initAutocomplete' );
+
+		wp_enqueue_style('admin_css', AMENITY_URL. '/assets/css/admin.css');
+
+		wp_register_script('admin_js', AMENITY_URL.'/assets/js/am.js');
+		wp_localize_script('admin_js', 'AMENITIES', array( 'data' => get_primary_location(), 'theme_url' => AMENITY_URL) );
+
+		wp_enqueue_script('admin_js');
+    }
+    add_action( 'admin_enqueue_scripts', 'load_admin_scripts' );
+
+    /**
+	* Add async attributes to enqueued scripts where needed.
+	* The ability to filter script tags was added in WordPress 4.1 for this purpose.
+	*/
+	function my_async_scripts( $tag, $handle, $src ) {
+		// the handles of the enqueued scripts we want to async
+		$async_scripts = array('admin-google-maps');
+
+		if ( in_array( $handle, $async_scripts ) ) {
+		    return '<script type="text/javascript" src="' . $src . '" async defer></script>' . "\n";
+		}
+
+		return $tag;
+	}
+	add_filter( 'script_loader_tag', 'my_async_scripts', 10, 3 );
 
 	/*
 	*	ADD TAXONOMIES
@@ -54,7 +86,7 @@
 		'label'                 => __( 'Amenity', 'Amenity' ),
 		'description'           => __( 'Area Amenities', 'Amenity' ),
 		'labels'                => $labels,
-		'supports'              => array( 'title', 'excerpt', 'author', 'featured_image', 'custom_fields' ),
+		'supports'              => array( 'title','featured_image', 'custom_fields' ),
 		'taxonomies'            => array( 'area_title' ),
 		'hierarchical'          => false,
 		'public'                => false,

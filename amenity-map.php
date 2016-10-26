@@ -5,39 +5,44 @@
 	* Version: 1.0.0
 	* Author: Zafer Sawaf
 	*/
-if ( ! defined( 'AMENITY_URL' ) )
-define( 'AMENITY_URL', plugin_dir_path( __FILE__ ) );
 
-require(AMENITY_URL.'core/init-data.php');
-require(AMENITY_URL.'core/functions.php');
-require(AMENITY_URL.'core/view.php');
+define('AMENITY_PATH', plugin_dir_path(__FILE__));
+define('AMENITY_URL', plugins_url('', __FILE__));
 
-function amenity_map_shortcode() {
-
-}
+require(AMENITY_PATH.'core/init-data.php');
+require(AMENITY_PATH.'core/functions.php');
+require(AMENITY_PATH.'core/init-meta-fields.php');
+require(AMENITY_PATH.'core/init-settings.php');
+require(AMENITY_PATH.'core/init-styles.php');
 
 function do_amentity_map() {
-	?>
-
-	<div class="map-outer">
-		<div class="map-sidebar">
-			<?php //do_categery_list() ?>
+	ob_start(); ?>
+	<div class="am <?php echo get_option('am_display_setting')?>">
+		<div class="am_navigation">
+			<?php display_amenity_category_menu() ?>
 		</div>
-		<div class="map-main">
-			<div id="amenities-map" class="amenities-map google-maps-outer">
-				<div class="map-inner">
-					<div id="map_canvas">
-						
-					</div>
+		<div id="am_map" class="am_map google-maps-outer">
+			<div class="map-inner">
+				<div id="map_canvas">
+					
 				</div>
-				<div class="loading"></div>
 			</div>
+			<div class="loading"></div>
 		</div>
 	</div>
 
-<?php }
 
-add_shortcode('amentity_map', 'do_amentity_map');
+	<script>
+	jQuery(document).ready(function($){
+		doAreaAmenities.init({
+			termsContainer : $(".am_navigation"),
+			loading: $(".loading")
+		});
+	});
+	</script>
+	
+	<?php
+	return ob_get_clean();
+}
 
-
-do_shortcode('[amentity_map]');
+add_shortcode('amenity_map', 'do_amentity_map');

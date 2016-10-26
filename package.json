@@ -1,0 +1,13 @@
+{
+  "name": "Amenity Map",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zsawaf/"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-sass": "^2.0.0"
+  }
+}
