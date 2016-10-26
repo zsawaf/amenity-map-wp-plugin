@@ -114,10 +114,10 @@
 	function display_amenity_category_menu() { ?>
 
 		<?php $terms = get_terms('amenity_category', array('hide_empty' => false)) ?>
-		<ul class="amenities-list">
-			<li class="term-all active"><a href="#" data-term-slug="all">All</a></li>
+		<ul class="amenities-list clearfix">
+			<li class="term-all active"><a href="#" data-term-slug="all"><span>All</span></a></li>
 		<?php foreach ($terms as $key => $term): ?>
-			<li class="side-nav-item term-<?php echo $term->term_id; ?> <?php echo $term->slug ?>"><a href="#" data-term-slug="<?php echo $term->slug; ?>"><?php echo $term->name; ?></a></li>
+			<li class="side-nav-item term-<?php echo $term->term_id; ?> <?php echo $term->slug ?>"><a href="#" data-term-slug="<?php echo $term->slug; ?>"><span><?php echo $term->name; ?></span></a></li>
 		<?php endforeach ?>
 		</ul>
 
