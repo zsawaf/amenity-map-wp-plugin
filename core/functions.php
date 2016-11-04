@@ -82,7 +82,8 @@
 	*/
 	function get_primary_location() {
 		$primary_location_id = get_option('am_primary_location');
-		$latitude = get_post_meta($primary_location_id)['latitude'][0];
+		$latitude_arr = get_post_meta($primary_location_id)['latitude'][0];
+		$latitude = $latitude_arr['latitude'][0];
 		$longitude = get_post_meta($primary_location_id)['longitude'][0];
 		$address = get_post_meta($primary_location_id)['address'][0];
 		$place_id = get_post_meta($primary_location_id)['place_id'][0];

@@ -12,7 +12,19 @@
 		wp_register_script('amenities-map-script', AMENITY_URL.'/assets/js/map.js', array('jquery'));
 		wp_register_script('infobox', AMENITY_URL.'/assets/js/infobox.js');
 
-		wp_localize_script('amenities-map-script', 'AMENITIES', array( 'data' => get_post_amenities(), 'categories' => get_amenity_categories(), 'theme_url' => AMENITY_URL, 'infobox_display' => get_infobox_display_options(), 'primary_location' => get_primary_location(), 'primary_location_icon' => get_option('am_primary_location_icon'), 'active_icon' => get_option('am_active_icon'), 'maps_api_key' => $maps_api_key, 'map_styles' => get_map_styles() ) );
+		wp_localize_script('amenities-map-script', 'AMENITIES', 
+			array(
+				 'data' => get_post_amenities(), 
+				 'categories' => get_amenity_categories(), 
+				 'theme_url' => AMENITY_URL, 
+				 'infobox_display' => get_infobox_display_options(), 
+				 'primary_location' => get_primary_location(), 
+				 'primary_location_icon' => get_option('am_primary_location_icon'), 
+				 'active_icon' => get_option('am_active_icon'), 
+				 'maps_api_key' => $maps_api_key, 
+				 'map_styles' => get_map_styles() 
+			 ) 
+		);
 
 		wp_enqueue_script('amenities-map-script');
 		wp_enqueue_script('infobox');
@@ -20,17 +32,25 @@
 	}
 
 	// enqueue and add admin scripts
-	function load_admin_scripts() {
-		$maps_api_key = get_option('am_gm_api_key');
+	function load_admin_scripts($hook) {
 
-		wp_enqueue_script('admin-google-maps', 'https://maps.googleapis.com/maps/api/js?key='.$maps_api_key.'&libraries=places&callback=initAutocomplete' );
+		global $post;
+		if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
+			if( 'amenities' !== $post->post_type )
+				return false;
 
-		wp_enqueue_style('admin_css', AMENITY_URL. '/assets/css/admin.css');
+			$maps_api_key = get_option('am_gm_api_key');
 
-		wp_register_script('admin_js', AMENITY_URL.'/assets/js/am.js');
-		wp_localize_script('admin_js', 'AMENITIES', array( 'data' => get_primary_location(), 'theme_url' => AMENITY_URL) );
+			wp_enqueue_script('am_admin-google-maps', 'https://maps.googleapis.com/maps/api/js?key='.$maps_api_key.'&libraries=places&callback=initAutocomplete' );
 
-		wp_enqueue_script('admin_js');
+			wp_enqueue_style('am_admin_css', AMENITY_URL. '/assets/css/admin.css');
+
+			wp_register_script('am_admin_js', AMENITY_URL.'/assets/js/am.js');
+
+			wp_localize_script('am_admin_js', 'AMENITIES', array( 'data' => get_primary_location(), 'theme_url' => AMENITY_URL) );
+
+			wp_enqueue_script('am_admin_js');
+		}
     }
     add_action( 'admin_enqueue_scripts', 'load_admin_scripts' );
 
