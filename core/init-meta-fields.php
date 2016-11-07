@@ -15,15 +15,16 @@
 	 * @param WP_Post $post Current post object.
 	 */
 	function address_picker_callback( $post ) {
-	    // Display code/markup goes here. Don't forget to include nonces!
+
 	    wp_nonce_field(basename(__FILE__), "meta-box-nonce"); 
+
 	    ?>
 	    
-	    <input id="pac-input" class="controls" type="text" placeholder="Search for an amenity address">
-	    <input type="hidden" id="am_lat" name="am_lat" value="<?php echo ( get_post_meta($post->ID, 'latitude' ) ) ? get_post_meta($post->ID, 'latitude' )  : '' ?>">
-	    <input type="hidden" id="am_lat" name="am_lat" value="<?php echo ( get_post_meta($post->ID, 'longitude' ) ) ? get_post_meta($post->ID, 'longitude' )  : '' ?>">
-	    <input type="hidden" id="am_lat" name="am_lat" value="<?php echo ( get_post_meta($post->ID, 'place_id' ) ) ? get_post_meta($post->ID, 'place_id' )  : '' ?>">
-	    <input type="hidden" id="am_lat" name="am_lat" value="<?php echo ( get_post_meta($post->ID, 'address' ) ) ? get_post_meta($post->ID, 'address' )  : '' ?>">
+		<input id="pac-input" class="controls" type="text" placeholder="Search for an amenity address">
+		<input type="hidden" id="am_lat" name="am_lat" value="<?php echo ( get_post_meta($post->ID, 'latitude' ) ) ? get_post_meta($post->ID, 'latitude', true )  : '' ?>">
+		<input type="hidden" id="am_lon" name="am_lon" value="<?php echo ( get_post_meta($post->ID, 'longitude' ) ) ? get_post_meta($post->ID, 'longitude', true )  : '' ?>">
+		<input type="hidden" id="am_place_id" name="am_place_id" value="<?php echo ( get_post_meta($post->ID, 'place_id' ) ) ? get_post_meta($post->ID, 'place_id',  true )  : '' ?>">
+		<input type="hidden" id="am_address" name="am_address" value="<?php echo ( get_post_meta($post->ID, 'address' ) ) ? get_post_meta($post->ID, 'address',  true )  : '' ?>">
 
 		<div id="am_admin_map"></div>
 		<?php
