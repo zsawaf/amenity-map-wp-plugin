@@ -10,6 +10,7 @@ define('AMENITY_PATH', plugin_dir_path(__FILE__));
 define('AMENITY_URL', plugins_url('', __FILE__));
 
 require(AMENITY_PATH.'core/init-data.php');
+require(AMENITY_PATH.'core/scripts-styles.php');
 require(AMENITY_PATH.'core/functions.php');
 require(AMENITY_PATH.'core/init-meta-fields.php');
 require(AMENITY_PATH.'core/init-settings.php');
