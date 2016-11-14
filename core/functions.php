@@ -18,14 +18,12 @@ function get_post_amenities(){
 		$array['found_posts'] = $results->found_posts;
 
 		foreach( $results->posts as $post ) {
-
-			$post->amenity_address = get_field('address', $post->ID);
-			$post->amenity_latitude = get_field('latitude', $post->ID);
-			$post->amenity_longitude = get_field('longitude', $post->ID);
-			$post->place_id = get_field('place_id', $post->ID);
+			$post->amenity_address = get_post_meta($post->ID, 'address', true);
+			$post->amenity_latitude = get_post_meta($post->ID, 'latitude', true);
+			$post->amenity_longitude = get_post_meta($post->ID, 'longitude', true);
+			$post->place_id = get_post_meta($post->ID, 'place_id', true);
 			$post->amenity_category = set_post_tax_array(wp_get_post_terms( $post->ID, 'amenity_category' ));
 			$array['posts'][] = $post;
-
 		}
 
 	}
@@ -63,7 +61,7 @@ function get_map_styles() {
 	$return_array['background_color'] = get_option('am_infobox_background');
 	$return_array['color'] = get_option('am_infobox_color');
 	$return_array['close_icon'] = get_option('am_infobox_close');
-	$return_array['map_style'] = get_option('am_fancy_maps_settings');
+	$return_array['map_style'] = "[".get_option('am_fancy_maps_settings')."]";
 
 	return json_encode($return_array);
 }
@@ -82,8 +80,7 @@ function get_infobox_display_options() {
 */
 function get_primary_location() {
 	$primary_location_id = get_option('am_primary_location');
-	$latitude_arr = get_post_meta($primary_location_id)['latitude'][0];
-	$latitude = $latitude_arr['latitude'][0];
+	$latitude = get_post_meta($primary_location_id)['latitude'][0];
 	$longitude = get_post_meta($primary_location_id)['longitude'][0];
 	$address = get_post_meta($primary_location_id)['address'][0];
 	$place_id = get_post_meta($primary_location_id)['place_id'][0];

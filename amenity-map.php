@@ -33,14 +33,14 @@ function do_amentity_map() {
 	</div>
 
 
-	<script>
+<!-- 	<script>
 	jQuery(document).ready(function($){
 		doAreaAmenities.init({
 			termsContainer : $(".am_navigation"),
 			loading: $(".loading")
 		});
 	});
-	</script>
+	</script> -->
 	
 	<?php
 	return ob_get_clean();

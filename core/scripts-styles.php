@@ -11,10 +11,11 @@ function am_add_scripts() {
 
 	wp_register_style( 'am-amenities-map-style', AMENITY_URL.'/assets/css/styles.css' );
 
-	wp_register_script('am-amenities-map-script', AMENITY_URL.'/assets/js/map.js', array('jquery'));
+	wp_register_script('am-amenities-map-script', AMENITY_URL.'/assets/js/map.js', array('jquery', 'am-infobox'));
+
 	wp_register_script('am-infobox', AMENITY_URL.'/assets/js/infobox.js');
 
-	wp_localize_script('amenities-map-script', 'AMENITIES', 
+	wp_localize_script('am-amenities-map-script', 'AMENITIES', 
 		array(
 			'data' => get_post_amenities(), 
 			'categories' => get_amenity_categories(), 
@@ -24,9 +25,10 @@ function am_add_scripts() {
 			'primary_location_icon' => get_option('am_primary_location_icon'), 
 			'active_icon' => get_option('am_active_icon'), 
 			'maps_api_key' => $maps_api_key, 
-			'map_styles' => get_map_styles() 
+			'map_styles' => get_map_styles()
 			) 
 		);
+
 
 	wp_enqueue_script('am-amenities-map-script');
 	wp_enqueue_script('am-infobox');
