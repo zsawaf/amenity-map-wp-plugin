@@ -31,7 +31,31 @@ function get_post_amenities(){
 		$array['posts'] = array('no dice');
 	}
 	return $array;
+}
 
+function get_sm_options() {
+	global $post;
+
+	$args = array(
+		'post_type' => 'single_maps',
+		'posts_per_page' => -1
+	);
+
+	$results = new WP_Query( $args );
+	$array = array();
+
+	foreach($results->posts as $post) {
+		$single_map_options = array();
+		$single_map_options["latitude"] = get_post_meta($post->ID, 'sm_latitude', true);
+		$single_map_options["longitude"] = get_post_meta($post->ID, 'sm_longitude', true);
+		$single_map_options["map_style"] = get_post_meta($post->ID, 'sm_map_styles', true);
+		$single_map_options["icon"] = get_post_meta($post->ID, 'sm_map_icon', true);
+
+		$array[$post->ID] = $single_map_options;
+		$single_map_options = null;
+	}
+
+	return json_encode($array);
 }
 
 function get_amenity_categories() {
@@ -61,7 +85,7 @@ function get_map_styles() {
 	$return_array['background_color'] = get_option('am_infobox_background');
 	$return_array['color'] = get_option('am_infobox_color');
 	$return_array['close_icon'] = get_option('am_infobox_close');
-	$return_array['map_style'] = "[".get_option('am_fancy_maps_settings')."]";
+	$return_array['map_style'] = get_option('am_fancy_maps_settings');
 
 	return json_encode($return_array);
 }

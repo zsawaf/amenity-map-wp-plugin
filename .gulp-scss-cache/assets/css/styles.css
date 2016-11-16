@@ -1,17 +1,17 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400");
-.am_map {
+.am_map, #am_single_map {
   height: 400px;
   width: 100%; }
-  .am_map h1 {
+  .am_map h1, #am_single_map h1 {
     font-size: 2em; }
-  .am_map .map-inner {
+  .am_map .map-inner, #am_single_map .map-inner {
     height: 100%; }
-  .am_map .map_canvas {
+  .am_map .map_canvas, #am_single_map .map_canvas {
     height: 100%; }
-  .am_map .infoBox {
+  .am_map .infoBox, #am_single_map .infoBox {
     font-size: 10px;
     font-family: inherit; }
-    .am_map .infoBox img {
+    .am_map .infoBox img, #am_single_map .infoBox img {
       max-width: 8px;
       max-height: 8px; }
 

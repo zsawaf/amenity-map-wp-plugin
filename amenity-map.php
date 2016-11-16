@@ -33,17 +33,36 @@ function do_amentity_map() {
 	</div>
 
 
-<!-- 	<script>
+	<script>
 	jQuery(document).ready(function($){
 		doAreaAmenities.init({
 			termsContainer : $(".am_navigation"),
 			loading: $(".loading")
 		});
 	});
-	</script> -->
+	</script>
 	
 	<?php
 	return ob_get_clean();
 }
 
 add_shortcode('amenity_map', 'do_amentity_map');
+
+function do_map($atts) {
+
+	$a = shortcode_atts( array(
+		'id' => '1',
+	), $atts, 'single_map' );
+
+	ob_start(); ?>
+	<div id="am_single_map"></div>
+	<script>
+		jQuery(document).ready(function($){
+			var map = new Map(<?php echo $a['id'] ?>);
+		});
+	</script>
+	<?php
+	return ob_get_clean();
+}
+
+add_shortcode('single_map', 'do_map');

@@ -193,5 +193,61 @@
 	    else if ( $old_icon !== $new_icon )
 	        update_term_meta( $term_id, 'icon', $new_icon );
 
+	}
+
+	/*
+	*	REGISTER META BOXES FOR SINGLE MAP
+	*/
+	function register_single_map_meta() {
+	    add_meta_box( 'am_sm_meta_fields', __( 'Single Map Fields', 'textdomain' ), 'am_sm_meta_fields', 'single_maps' );
 
 	}
+
+	add_action( 'add_meta_boxes', 'register_single_map_meta' );
+
+	function am_sm_meta_fields($post) {
+		wp_nonce_field(basename(__FILE__), "meta-box-nonce"); 
+		?>
+		<input id="sm_latitude" placeholder="Latitude" type="text" name="sm_latitude" value="<?php echo ( get_post_meta($post->ID, 'sm_latitude' ) ) ? get_post_meta($post->ID, 'sm_latitude', true )  : '' ?>">
+
+		<input id="sm_longitude" placeholder="Longitude" type="text" name="sm_longitude" value="<?php echo ( get_post_meta($post->ID, 'sm_longitude' ) ) ? get_post_meta($post->ID, 'sm_longitude', true )  : '' ?>">
+
+		<textarea id="sm_map_styles" placeholder="Map Styles" type="text" name="sm_map_styles" value=""><?php echo ( get_post_meta($post->ID, 'sm_map_styles' ) ) ? get_post_meta($post->ID, 'sm_map_styles', true )  : 'Map Styles' ?></textarea>
+
+		<input id="sm_map_icon" placeholder="Map Icon" type="text" name="sm_map_icon" value="<?php echo ( get_post_meta($post->ID, 'sm_map_icon' ) ) ? get_post_meta($post->ID, 'sm_map_icon', true )  : '' ?>">
+		<?php
+	}
+
+	function am_sm_save_fields( $post_id ) {
+	    // Save logic goes here. Don't forget to include nonce checks!
+		if (!isset($_POST["meta-box-nonce"]) || !wp_verify_nonce($_POST["meta-box-nonce"], basename(__FILE__)))
+        	return $post_id;
+
+        $latitude = "";
+        $longitude = "";
+        $map_styles = "";
+        $icon = "";
+
+        if (isset($_POST['sm_latitude'])) {
+        	$latitude = $_POST['sm_latitude'];
+        }
+        update_post_meta($post_id, "sm_latitude", $latitude);
+
+        if (isset($_POST['sm_longitude'])) {
+        	$longitude = $_POST['sm_longitude'];
+        }
+
+        if (isset($_POST['sm_map_styles'])) {
+        	$map_styles = $_POST['sm_map_styles'];
+        }
+        update_post_meta($post_id, 'sm_longitude', $longitude);
+
+        update_post_meta($post_id, "sm_map_styles", $map_styles);
+
+        if (isset($_POST['sm_map_icon'])) {
+        	$icon = $_POST['sm_map_icon'];
+        }
+        update_post_meta($post_id, "sm_map_icon", $icon);
+	}
+
+	add_action( 'save_post', 'am_sm_save_fields' );
