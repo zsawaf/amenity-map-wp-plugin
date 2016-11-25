@@ -64,7 +64,7 @@ function amenity_category() {
 	$labels = array(
 		'name'                       => _x( 'Amenity Categories', 'Taxonomy General Name', 'Amenity' ),
 		'singular_name'              => _x( 'Amenity Category', 'Taxonomy Singular Name', 'Amenity' ),
-		'menu_name'                  => __( 'Amenity Category', 'Amenity' ),
+		'menu_name'                  => __( 'Amenity Categories', 'Amenity' ),
 		'all_items'                  => __( 'All Amenity Categories', 'Amenity' ),
 		'parent_item'                => __( 'Parent Amenity Category', 'Amenity' ),
 		'parent_item_colon'          => __( 'Parent Amenity Category:', 'Amenity' ),

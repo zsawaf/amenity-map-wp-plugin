@@ -24,7 +24,7 @@ gulp.task("styles", function () {
 
 gulp.task("admin_styles", function () {
     gulp.src(
-        "assets/css/admin.scss"
+        "assets/css/am-admin-styles.scss"
     ).pipe(scss(
     )).pipe(autoprefixer({
         browsers: ['> 1%'],

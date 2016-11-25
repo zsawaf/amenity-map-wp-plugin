@@ -179,6 +179,7 @@ function display_amenity_category_menu() { ?>
 
 <?php }
 
+<<<<<<< HEAD
 
 function am_lt( $data ) { ?>
 	<script>
@@ -187,6 +188,8 @@ function am_lt( $data ) { ?>
 <?php }
 
 
+=======
+>>>>>>> master
 
 
 

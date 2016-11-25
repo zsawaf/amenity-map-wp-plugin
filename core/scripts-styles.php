@@ -19,33 +19,31 @@ function am_add_scripts() {
 
 }
 
-// enqueue and add admin scripts
+
 function load_admin_scripts($hook) {
 
 		if( 'post-new.php' != $hook && 'post.php' != $hook ) {
 			return;
 		}
+		if ( !isset($_GET['post_type']) || ( isset($_GET['post_type']) && 'amenities' != $_GET['post_type'] ) ) {
+			return;
+		}
 
 		$maps_api_key = get_option('am_gm_api_key');
-
 		$maps_api_url = 'https://maps.googleapis.com/maps/api/js?key='.$maps_api_key.'&libraries=places&callback=initAutocomplete';
 
-		lt($maps_api_url);
-
-	
-		wp_register_script('am_admin_js', AMENITY_URL.'/assets/js/am.js', array( 'jquery'), null, true);
-			wp_localize_script('am_admin_js', 
+		wp_register_script('am_admin_scripts', AMENITY_URL.'/assets/js/am-admin-scripts.js', array( 'jquery'), null, true);
+			wp_localize_script('am_admin_scripts', 
 				'AMENITIES', 
 				array( 
 					'data' => get_primary_location(), 
 					'theme_url' => AMENITY_URL
-				) 
+				)
 			);
-		wp_enqueue_script('am_admin_js');
+		wp_enqueue_script('am_admin_scripts');
 
-		wp_enqueue_script('am-admin-google-maps', $maps_api_url, array('am_admin_js'), null, true );
-
-
-		wp_enqueue_style('am_admin_css', AMENITY_URL. '/assets/css/admin.css');
+		wp_enqueue_script('am-admin-google-maps', $maps_api_url, array('am_admin_scripts'), null, true );
+		wp_enqueue_style('am_admin_styles', AMENITY_URL. '/assets/css/am-admin-styles.css');
+		
 }
 add_action( 'admin_enqueue_scripts', 'load_admin_scripts' );
