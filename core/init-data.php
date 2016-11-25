@@ -134,7 +134,7 @@ function single_map() {
 		'hierarchical'          => false,
 		'public'                => false,
 		'show_ui'               => true,
-		'show_in_menu'          => true,
+		'show_in_menu'          => false,
 		'menu_position'         => 5,
 		'show_in_admin_bar'     => true,
 		'show_in_nav_menus'     => true,
@@ -147,3 +147,18 @@ function single_map() {
 	register_post_type( 'single_maps', $args );
 }
 add_action( 'init', 'single_map', 0 );
+
+add_action( 'admin_menu', 'single_map_submenu' );
+function single_map_submenu() {
+	add_submenu_page(
+		'edit.php?post_type=amenities',
+		'Single Maps',
+		'Single Maps',
+		'edit_posts',
+		'edit.php?post_type=single_maps'
+	);
+}
+
+
+
+

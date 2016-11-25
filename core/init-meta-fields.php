@@ -5,7 +5,7 @@
 
 	// address picker
 	function register_address_meta_box() {
-	    add_meta_box( 'am_meta_address', __( 'Amenity Address', 'textdomain' ), 'address_picker_callback', 'amenities' );
+	    add_meta_box( 'am_meta_address', __( 'Address', 'textdomain' ), 'address_picker_callback', array( 'amenities', 'single_maps' ));
 	}
 	add_action( 'add_meta_boxes', 'register_address_meta_box' );
 	 
@@ -25,6 +25,7 @@
 		<input type="hidden" id="am_lon" name="am_lon" value="<?php echo ( get_post_meta($post->ID, 'longitude' ) ) ? get_post_meta($post->ID, 'longitude', true )  : '' ?>">
 		<input type="hidden" id="am_place_id" name="am_place_id" value="<?php echo ( get_post_meta($post->ID, 'place_id' ) ) ? get_post_meta($post->ID, 'place_id',  true )  : '' ?>">
 		<input type="hidden" id="am_address" name="am_address" value="<?php echo ( get_post_meta($post->ID, 'address' ) ) ? get_post_meta($post->ID, 'address',  true )  : '' ?>">
+		<input type="hidden" id="full_address_title" name="full_address_title" value="<?php echo ( get_post_meta($post->ID, 'full_address_title' ) ) ? get_post_meta($post->ID, 'full_address_title',  true )  : '' ?>">
 
 		<div id="am_admin_map"></div>
 		<?php
@@ -49,6 +50,11 @@
         	$address = $_POST['am_address'];
         }
         update_post_meta($post_id, "address", $address);
+
+        if (isset($_POST['full_address_title'])) {
+        	$full_address_title = $_POST['full_address_title'];
+        }
+        update_post_meta($post_id, "full_address_title", $full_address_title);
 
         if (isset($_POST['am_lon'])) {
         	$lon = $_POST['am_lon'];
@@ -208,13 +214,17 @@
 	function am_sm_meta_fields($post) {
 		wp_nonce_field(basename(__FILE__), "meta-box-nonce"); 
 		?>
-		<input id="sm_latitude" placeholder="Latitude" type="text" name="sm_latitude" value="<?php echo ( get_post_meta($post->ID, 'sm_latitude' ) ) ? get_post_meta($post->ID, 'sm_latitude', true )  : '' ?>">
+<!-- 		<label for="sm_latitude">Latitude: </label>
+		<input id="sm_latitude" placeholder="Latitude" type="text" name="sm_latitude" value="<?php echo ( get_post_meta($post->ID, 'sm_latitude' ) ) ? get_post_meta($post->ID, 'sm_latitude', true )  : '' ?>"><br>
+ -->		
+<!-- 		<label for="sm_longitude">Longitude: </label>
+		<input id="sm_longitude" placeholder="Longitude" type="text" name="sm_longitude" value="<?php echo ( get_post_meta($post->ID, 'sm_longitude' ) ) ? get_post_meta($post->ID, 'sm_longitude', true )  : '' ?>"><br>
+ -->
+		<label for="sm_map_styles">Map Styles: </label>
+		<textarea id="sm_map_styles" placeholder="Map Styles" type="text" name="sm_map_styles" value=""><?php echo ( get_post_meta($post->ID, 'sm_map_styles' ) ) ? get_post_meta($post->ID, 'sm_map_styles', true )  : 'Map Styles' ?></textarea><br>
 
-		<input id="sm_longitude" placeholder="Longitude" type="text" name="sm_longitude" value="<?php echo ( get_post_meta($post->ID, 'sm_longitude' ) ) ? get_post_meta($post->ID, 'sm_longitude', true )  : '' ?>">
-
-		<textarea id="sm_map_styles" placeholder="Map Styles" type="text" name="sm_map_styles" value=""><?php echo ( get_post_meta($post->ID, 'sm_map_styles' ) ) ? get_post_meta($post->ID, 'sm_map_styles', true )  : 'Map Styles' ?></textarea>
-
-		<input id="sm_map_icon" placeholder="Map Icon" type="text" name="sm_map_icon" value="<?php echo ( get_post_meta($post->ID, 'sm_map_icon' ) ) ? get_post_meta($post->ID, 'sm_map_icon', true )  : '' ?>">
+		<label for="sm_map_icon">Map Icon: </label>
+		<input id="sm_map_icon" placeholder="Map Icon" type="text" name="sm_map_icon" value="<?php echo ( get_post_meta($post->ID, 'sm_map_icon' ) ) ? get_post_meta($post->ID, 'sm_map_icon', true )  : '' ?>"><br>
 		<?php
 	}
 
@@ -228,21 +238,21 @@
         $map_styles = "";
         $icon = "";
 
-        if (isset($_POST['sm_latitude'])) {
-        	$latitude = $_POST['sm_latitude'];
-        }
-        update_post_meta($post_id, "sm_latitude", $latitude);
+        // if (isset($_POST['sm_latitude'])) {
+        // 	$latitude = $_POST['sm_latitude'];
+        // }
+        // update_post_meta($post_id, "sm_latitude", $latitude);
 
-        if (isset($_POST['sm_longitude'])) {
-        	$longitude = $_POST['sm_longitude'];
-        }
+        // if (isset($_POST['sm_longitude'])) {
+        // 	$longitude = $_POST['sm_longitude'];
+        // }
 
         if (isset($_POST['sm_map_styles'])) {
         	$map_styles = $_POST['sm_map_styles'];
         }
-        update_post_meta($post_id, 'sm_longitude', $longitude);
+        // update_post_meta($post_id, 'sm_longitude', $longitude);
 
-        update_post_meta($post_id, "sm_map_styles", $map_styles);
+        // update_post_meta($post_id, "sm_map_styles", $map_styles);
 
         if (isset($_POST['sm_map_icon'])) {
         	$icon = $_POST['sm_map_icon'];

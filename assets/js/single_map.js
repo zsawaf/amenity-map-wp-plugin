@@ -4,14 +4,18 @@ class Map {
 		// filter all options and get the selected one.
 		var all_options = JSON.parse(OPTIONS['data']);
 		var options = this.filterMaps(all_options);
-
+		 console.log(all_options);
+		 console.log(options);
 		// init all variables
-		this.coords = {lat: parseFloat(options.latitude), lng: parseFloat(options.longitude)};
+		this.coords = {
+			lat: parseFloat(options.latitude), 
+			lng: parseFloat(options.longitude)
+		};
 		this.map_styles = JSON.parse(options['map_style']);
 		this.icon = options.icon;
 		this.marker = null;
 		this.map = null;
-
+		this.isDraggable = $(document).width() > 768 ? true : false;
 		this.createMap();
 		this.createPin();
 	}
@@ -21,7 +25,9 @@ class Map {
 		this.map = new google.maps.Map(document.getElementById('am_single_map'), {
 			zoom: 15,
 			center: this.coords,
-			styles: this.map_styles
+			styles: this.map_styles,
+			draggable: this.isDraggable,
+			scrollwheel: false,
 		});
 	}
 
