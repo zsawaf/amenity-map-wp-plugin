@@ -39,6 +39,11 @@ function get_post_amenities(){
 
 }
 
+/**
+ * Get single amenity
+ * @param  [type] $amenity Amenity - Post object or Post ID
+ * @return object - Amentiy category - object or term ID
+ */
 function get_amenity( $amenity ) {
 
 	/*if amenity is post ID*/
@@ -60,6 +65,21 @@ function get_amenity( $amenity ) {
 	return $post;
 
 }
+
+function get_amenities_by_categories() {
+	
+	$categories = get_amenity_categories();
+	$return = array();
+
+	foreach( $categories as $category ) {
+		$return['category'] = $category;
+		$return['amenities'] = get_category_amenities($category);
+	}
+	lt($return);
+	return $return;
+
+}
+add_action('wp_head', 'get_amenities_by_categories');
 
 
 function get_sm_options() {
@@ -105,18 +125,14 @@ function get_amenity_categories() {
 
 	foreach($categories as $category) {
 
-		$cat_array = array();
-		$cat_array[] = $category->term_id;
-		$cat_array[] = $category->slug;
-
-		$cat_array[] = am_get_term_icon( $category->term_id );
-		$cat_array[] = am_get_term_color( $category->term_id );
-
-		$return_array[] = $cat_array;
+		$category->term_icon = am_get_term_icon( $category->term_id );
+		$category->term_color = am_get_term_icon( $category->term_id );
+	
+		$return_array[] = $category;
 
 	}
 
-	return json_encode($return_array);
+	return $return_array;
 
 }
 
