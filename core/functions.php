@@ -71,9 +71,9 @@ function get_amenities_by_categories() {
 	$categories = get_amenity_categories();
 	$return = array();
 
-	foreach( $categories as $category ) {
-		$return['category'] = $category;
-		$return['amenities'] = get_category_amenities($category);
+	foreach( $categories as $key => $category ) {
+		$return[$key]['category'] = $category;
+		$return[$key]['amenities'] = get_category_amenities($category);
 	}
 	lt($return);
 	return $return;
@@ -114,10 +114,10 @@ function get_sm_options() {
 function get_amenity_categories() {
 
 	$args = array(
-		'post_type' => 'amenities',
+		'hide_empty' => false,
 		'orderby' => 'name',
-			'order' => 'ASC',
-			'posts_per_page' => -1
+		'order' => 'ASC',
+		'posts_per_page' => -1
 	);
 	
 	$categories = get_terms('amenity_category', $args);
