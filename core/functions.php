@@ -45,6 +45,7 @@ function get_amenity( $amenity ) {
 	if( ctype_digit($amenity) ) {
 		$post = get_post($amenity);
 	}
+	
 	/*else if is post object*/
 	else {
 		$post = $amenity;
@@ -105,17 +106,49 @@ function get_amenity_categories() {
 	foreach($categories as $category) {
 
 		$cat_array = array();
-		$cat_array[]= $category->term_id;
-		$cat_array[]= $category->slug;
+		$cat_array[] = $category->term_id;
+		$cat_array[] = $category->slug;
 
-		$cat_array[]= am_get_term_icon( $category->term_id );
-		$cat_array[]= am_get_term_color( $category->term_id );
+		$cat_array[] = am_get_term_icon( $category->term_id );
+		$cat_array[] = am_get_term_color( $category->term_id );
 
 		$return_array[] = $cat_array;
 
 	}
-	
+
 	return json_encode($return_array);
+
+}
+
+function get_category_amenities( $amenity_category = null ) {
+	
+	$amenity_category = 124;
+	
+	/*else if is term object*/
+	if( is_object($amenity_category) ) {
+		$term_id = $amenity_category->term_id;
+	}
+
+	/*if amenity is term_id*/
+	else {
+		$term_id = $amenity_category;
+	}
+
+	$args = array(
+		'post_type' => 'amenities',
+		'posts_per_page' => -1,
+		'tax_query' => array(
+			array(
+				'taxonomy' => 'amenity_category',
+				'field' => 'term_id',
+				'terms' => $term_id
+			)
+		)
+	);
+
+	$posts = get_posts($args);
+
+	return $posts;
 
 }
 
@@ -135,10 +168,10 @@ function get_infobox_display_options() {
 
 	$return_array = array();
 
-	$return_array[]= get_option('am_infobox_address');
-	$return_array[]= get_option('am_infobox_phone');
-	$return_array[]= get_option('am_infobox_website');
-	$return_array[]= get_option('am_infobox_card');
+	$return_array[] = get_option('am_infobox_address');
+	$return_array[] = get_option('am_infobox_phone');
+	$return_array[] = get_option('am_infobox_website');
+	$return_array[] = get_option('am_infobox_card');
 
 	return json_encode($return_array);
 
@@ -156,11 +189,11 @@ function get_primary_location() {
 	$place_id = get_post_meta($primary_location_id)['place_id'][0];
 
 	$return_array = array();
-	$return_array[]= $address;
-	$return_array[]= $latitude;
-	$return_array[]= $longitude;
-	$return_array[]= get_post($primary_location_id)->post_name;
-	$return_array[]= $place_id;
+	$return_array[] = $address;
+	$return_array[] = $latitude;
+	$return_array[] = $longitude;
+	$return_array[] = get_post($primary_location_id)->post_name;
+	$return_array[] = $place_id;
 	
 	return json_encode($return_array);
 

@@ -1,6 +1,5 @@
 var $ = jQuery;
 
-console.log(AMENITIES);
 var doAreaAmenities = {
 
 	cat : 'all',
@@ -17,7 +16,7 @@ var doAreaAmenities = {
 	init : function( args ) {
 		
 		var self = this;
-		// replace map style with desired styles
+
 		this.amenities = AMENITIES;
 
 		this.termsContainer = args.termsContainer; // container of tax terms

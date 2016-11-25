@@ -46,6 +46,7 @@ function do_map($atts) {
 	$map_post = get_post(array("ID" => $a['id']));
 
 	ob_start(); ?>
+	
 	<div id="am_single_map"></div>
 	<script>
 		jQuery(document).ready(function($){
