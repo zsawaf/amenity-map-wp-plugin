@@ -55,3 +55,31 @@ function load_admin_scripts($hook) {
 add_action( 'admin_enqueue_scripts', 'load_admin_scripts' );
 
 
+function enqueue_am_scripts() {
+
+	wp_localize_script('am-amenities-map-script', 'AMENITIES', 
+		array(
+			'data' => get_post_amenities(), 
+			'categories' => get_amenity_categories(), 
+			'theme_url' => AMENITY_URL, 
+			'infobox_display' => get_infobox_display_options(), 
+			'primary_location' => get_primary_location(), 
+			'primary_location_icon' => get_option('am_primary_location_icon'), 
+			'active_icon' => get_option('am_active_icon'), 
+			'maps_api_key' => $maps_api_key, 
+			'map_styles' => get_map_styles()
+		) 
+	);
+
+	wp_localize_script('am-sm-script', 'OPTIONS', array(
+			'data' => get_sm_options(),
+		)
+	);
+
+	wp_enqueue_script('am-google-maps');
+	wp_enqueue_script('am-amenities-map-script');
+	wp_enqueue_script('am-infobox');
+	wp_enqueue_script('am-sm-script');
+	wp_enqueue_style('am-amenities-map-style');
+	
+}

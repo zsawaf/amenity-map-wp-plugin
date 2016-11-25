@@ -91,21 +91,29 @@ var doAreaAmenities = {
 			var filteredList = [];
 			// loop through all amenities
 			for( i = 0; i <= amenities.length - 1; i ++ ) {
-				var amentyCategories = amenities[i]['amenity_category'][0];
-				if (amenities[i].post_name == this.primary_location[3]) {
-					filteredList.push(amenities[i]);
-				}
-				// if the selected category is part of the amenty, then add the amenity to the filtered list
-				if( amentyCategories == this.cat ) {
-					filteredList.push(amenities[i]);
+
+				if( amenities[i] ) {
+					
+					var amentyCategories = amenities[i]['amenity_category'][0];
+
+					if (amenities[i].post_name == this.primary_location[3]) {
+						filteredList.push(amenities[i]);
+					}
+					// if the selected category is part of the amenty, then add the amenity to the filtered list
+					if( amentyCategories == this.cat ) {
+						filteredList.push(amenities[i]);
+					}
+
 				}
 			}
 		}
 
 		this.filteredList = filteredList;
+
 	},
 
 	loopPostHtml : function() {
+		
 		var self = this;
 		self.infoWindows = [];
 
@@ -116,19 +124,16 @@ var doAreaAmenities = {
 			for( i = 0; i < obj.length; i++ ) {
 				var html = '';
 				var content = '';
-				// if(0){
+
 				if( obj[i] && typeof obj[i].amenity_latitude !== 'undefined' && typeof obj[i].amenity_longitude !== 'undefined' ) {
 
 					if( obj[i].amenity_address.address != '' ) {
 						self.mapMarkers.push( [obj[i].post_name, obj[i].amenity_latitude, obj[i].amenity_longitude, obj[i]['amenity_category'][0], obj[i].place_id ] );
 					}	
-						// infoWindowContent.push( [ <?=json_encode( $content )?> ] );
 					
 					if( obj[i].amenity_address && obj[i].amenity_address != '' ) {
 
 						content += '<div class = "info-content"><h3 style="line-height:1; margin: 0;font-size:1.2em;">' + obj[i].post_title + '</h3>';
-						//content += '<p>' + obj[i].amenity_address.address + '</p></div>';
-
 						self.infoWindows.push( [ content ] );
 
 					}

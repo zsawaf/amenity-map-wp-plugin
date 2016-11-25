@@ -7,7 +7,8 @@ function get_post_amenities(){
 		'post_type' => 'amenities',
 		'orderby' => 'title',
 		'order' => 'ASC',
-		'posts_per_page' => -1
+		'posts_per_page' => -1,
+		'post_status' => 'publish'
 	);
 
 	$results = new WP_Query( $args );
@@ -72,7 +73,7 @@ function get_sm_options() {
 
 		$array[$post->ID] = $single_map_options;
 		$single_map_options = null;
-		
+
 	}
 
 	return json_encode($array);

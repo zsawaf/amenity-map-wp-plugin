@@ -1,10 +1,7 @@
 <?php
-
-
-
 function do_amentity_map() {
 
-	get_shortcode_scripts();
+	enqueue_am_scripts();
 
 	ob_start(); ?>
 	
@@ -40,27 +37,23 @@ add_shortcode('amenity_map', 'do_amentity_map');
 
 function do_map($atts) {
 
-	get_shortcode_scripts();
+	enqueue_am_scripts();
 
 	$a = shortcode_atts( array(
 		'id' => '1',
 	), $atts, 'single_map' );
 
-	ob_start(); ?>
+	$map_post = get_post(array("ID" => $a['id']));
 
+	ob_start(); ?>
 	<div id="am_single_map"></div>
 	<script>
 		jQuery(document).ready(function($){
 			var map = new Map(<?php echo $a['id'] ?>);
 		});
 	</script>
-	
 	<?php
-	
 	return ob_get_clean();
-
 }
 
 add_shortcode('single_map', 'do_map');
-
-
