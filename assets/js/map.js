@@ -228,7 +228,7 @@ var doAreaAmenities = {
 	initialize : function( markers ) {
 		var self = this;
 		var bounds = new google.maps.LatLngBounds();
-		console.log(this.isDraggable);
+
 		var mapOptions = {
 			draggable: this.isDraggable,
 			styles: this.style,
@@ -288,7 +288,7 @@ var doAreaAmenities = {
 			console.log(v);
 		});
 	},
-	
+
 	get_marker_html: function(o_place, map, infobox, position, marker, flag) {
 		var self = this;
 		if (typeof flag === 'undefined') { flag = false; }

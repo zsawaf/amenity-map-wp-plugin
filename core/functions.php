@@ -75,11 +75,10 @@ function get_amenities_by_categories() {
 		$return[$key]['category'] = $category;
 		$return[$key]['amenities'] = get_category_amenities($category);
 	}
-	lt($return);
+
 	return $return;
 
 }
-add_action('wp_head', 'get_amenities_by_categories');
 
 
 function get_sm_options() {
@@ -137,8 +136,6 @@ function get_amenity_categories() {
 }
 
 function get_category_amenities( $amenity_category = null ) {
-	
-	$amenity_category = 124;
 	
 	/*else if is term object*/
 	if( is_object($amenity_category) ) {
@@ -242,7 +239,16 @@ function display_amenity_category_menu() { ?>
 
 <?php }
 
+function display_amentiy_category_accordian() { ?>
 
+	<?php $terms = get_terms('amenity_category', array('hide_empty' => false)) ?>
+	<ul class="amenities-list clearfix">
+		<?php foreach ($terms as $key => $term): ?>
+		<li class="side-nav-item term-<?php echo $term->term_id; ?> <?php echo $term->slug ?>"><a href="#" data-term-slug="<?php echo $term->slug; ?>"><span><?php echo $term->name; ?></span></a></li>
+		<?php endforeach ?>
+	</ul>
+	
+}
 
 
 
