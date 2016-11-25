@@ -179,18 +179,6 @@ function display_amenity_category_menu() { ?>
 
 <?php }
 
-<<<<<<< HEAD
-
-function am_lt( $data ) { ?>
-	<script>
-		console.log( <?php echo json_encode($data) ?> );
-	</script>
-<?php }
-
-
-=======
->>>>>>> master
-
 
 
 
