@@ -1,4 +1,7 @@
 <?php
+/**
+ * Shortcode to display amenity map of all amenities
+ */
 function do_amentity_map() {
 
 	enqueue_am_scripts();
@@ -19,7 +22,6 @@ function do_amentity_map() {
 		</div>
 	</div>
 
-
 	<script>
 	jQuery(document).ready(function($){
 		doAreaAmenities.init({
@@ -32,9 +34,12 @@ function do_amentity_map() {
 	<?php
 	return ob_get_clean();
 }
-
 add_shortcode('amenity_map', 'do_amentity_map');
 
+
+/**
+ * Shortcode to display a single map amenity
+ */
 function do_map($atts) {
 
 	enqueue_am_scripts();
@@ -56,5 +61,25 @@ function do_map($atts) {
 	<?php
 	return ob_get_clean();
 }
-
 add_shortcode('single_map', 'do_map');
+
+
+function do_amenity_accordian() {
+
+	ob_start(); ?>
+	
+	<?php display_amentiy_category_accordian(); ?>
+
+	<?php
+	return ob_get_clean();	
+}
+add_shortcode('amenity_accordian', 'do_amenity_accordian');
+
+
+
+
+
+
+
+
+

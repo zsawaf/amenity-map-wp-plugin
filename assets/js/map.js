@@ -228,7 +228,7 @@ var doAreaAmenities = {
 	initialize : function( markers ) {
 		var self = this;
 		var bounds = new google.maps.LatLngBounds();
-		console.log(this.isDraggable);
+
 		var mapOptions = {
 			draggable: this.isDraggable,
 			styles: this.style,
@@ -288,6 +288,7 @@ var doAreaAmenities = {
 			console.log(v);
 		});
 	},
+
 	get_marker_html: function(o_place, map, infobox, position, marker, flag) {
 		var self = this;
 		if (typeof flag === 'undefined') { flag = false; }
@@ -311,28 +312,40 @@ var doAreaAmenities = {
 			}
 		});
 	},
+
 	write_marker_html: function(details) {
+		
 		var html = '';
+
 		html += '<h3 class="am_title">'+details.name+'</h3>';
 		html+= (this.infobox_options[0] == 1) ? '<p class="address">'+details.formatted_address+'</p>' : '';
 		html += '<div class="am_contact_info">';
-		html+= (this.infobox_options[1] == 1) ? '<p>'+details.formatted_phone_number+'</p>' : '';
-		html+= (this.infobox_options[2] == 1) ? '<p>'+details.website+'</p>' : '';
+			html+= (this.infobox_options[1] == 1) ? '<p>'+details.formatted_phone_number+'</p>' : '';
+			html+= (this.infobox_options[2] == 1) ? '<p>'+details.website+'</p>' : '';
 		html += '</div>';
+		
 		return html;
+
 	},
+
 	set_icons: function(markers, marker, categories) {
+	
 		if (marker.title == this.primary_location[3]) {
+			
 			marker.setIcon(AMENITIES['primary_location_icon']);
 			return false;
+
 		}
-		 // console.log(categories) ;
-		 // return false;
+		
 		for ( var i = 0; i < categories.length ; i ++ ) {
+			
 			var category = categories[i];
-			if (category[1] == markers[3]) {
-				marker.setIcon(category[2]);
+
+			if (category.slug == markers[3]) {
+			
+				marker.setIcon(category.term_icon);
 				return false;
+
 			}
 		}
 	}

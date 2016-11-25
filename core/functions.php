@@ -39,6 +39,11 @@ function get_post_amenities(){
 
 }
 
+/**
+ * Get single amenity
+ * @param  [type] $amenity Amenity - Post object or Post ID
+ * @return object - Amentiy category - object or term ID
+ */
 function get_amenity( $amenity ) {
 
 	/*if amenity is post ID*/
@@ -58,6 +63,20 @@ function get_amenity( $amenity ) {
 	$post->amenity_category = set_post_tax_array(wp_get_post_terms( $post->ID, 'amenity_category' ));
 
 	return $post;
+
+}
+
+function get_amenities_by_categories() {
+	
+	$categories = get_amenity_categories();
+	$return = array();
+
+	foreach( $categories as $key => $category ) {
+		$return[$key]['category'] = $category;
+		$return[$key]['amenities'] = get_category_amenities($category);
+	}
+
+	return $return;
 
 }
 
@@ -94,10 +113,10 @@ function get_sm_options() {
 function get_amenity_categories() {
 
 	$args = array(
-		'post_type' => 'amenities',
+		'hide_empty' => false,
 		'orderby' => 'name',
-			'order' => 'ASC',
-			'posts_per_page' => -1
+		'order' => 'ASC',
+		'posts_per_page' => -1
 	);
 	
 	$categories = get_terms('amenity_category', $args);
@@ -105,24 +124,18 @@ function get_amenity_categories() {
 
 	foreach($categories as $category) {
 
-		$cat_array = array();
-		$cat_array[] = $category->term_id;
-		$cat_array[] = $category->slug;
-
-		$cat_array[] = am_get_term_icon( $category->term_id );
-		$cat_array[] = am_get_term_color( $category->term_id );
-
-		$return_array[] = $cat_array;
+		$category->term_icon = am_get_term_icon( $category->term_id );
+		$category->term_color = am_get_term_icon( $category->term_id );
+	
+		$return_array[] = $category;
 
 	}
 
-	return json_encode($return_array);
+	return $return_array;
 
 }
 
 function get_category_amenities( $amenity_category = null ) {
-	
-	$amenity_category = 124;
 	
 	/*else if is term object*/
 	if( is_object($amenity_category) ) {
@@ -226,7 +239,16 @@ function display_amenity_category_menu() { ?>
 
 <?php }
 
+function display_amentiy_category_accordian() { ?>
 
+	<?php $terms = get_terms('amenity_category', array('hide_empty' => false)) ?>
+	<ul class="amenities-list clearfix">
+		<?php foreach ($terms as $key => $term): ?>
+		<li class="side-nav-item term-<?php echo $term->term_id; ?> <?php echo $term->slug ?>"><a href="#" data-term-slug="<?php echo $term->slug; ?>"><span><?php echo $term->name; ?></span></a></li>
+		<?php endforeach ?>
+	</ul>
+	
+}
 
 
 
