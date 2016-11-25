@@ -23,7 +23,7 @@ var doAreaAmenities = {
 		this.termsContainer = args.termsContainer; // container of tax terms
 		this.loading = args.loading; // selector for loading div
 		this.primary_location = JSON.parse(this.amenities['primary_location']);
-		this.categories = JSON.parse(this.amenities['categories']);
+		this.categories = this.amenities['categories'];
 		this.infobox_options = JSON.parse(this.amenities['infobox_display']);
 		this.map = null;
 		this.position = null;
@@ -82,6 +82,7 @@ var doAreaAmenities = {
 	setFilteredResults : function() {
 		var self = this;
 		var amenities = this.amenities['data']['posts'];
+		 console.log(this.amenities);
 		var amenities_category = $(".am_navigation ul .active").attr("data-term-slug");
 
 		if('all' == this.cat) {
@@ -121,11 +122,11 @@ var doAreaAmenities = {
 
 		if( obj.length > 0 ) {
 
-			for( i = 0; i < obj.length; i++ ) {
+			for( i = 0; i < obj.length - 1; i++ ) {
 				var html = '';
 				var content = '';
 
-				if( obj[i] && typeof obj[i].amenity_latitude !== 'undefined' && typeof obj[i].amenity_longitude !== 'undefined' ) {
+				if( typeof obj[i].amenity_latitude !== 'undefined' && typeof obj[i].amenity_longitude !== 'undefined' ) {
 
 					if( obj[i].amenity_address.address != '' ) {
 						self.mapMarkers.push( [obj[i].post_name, obj[i].amenity_latitude, obj[i].amenity_longitude, obj[i]['amenity_category'][0], obj[i].place_id ] );
@@ -326,6 +327,8 @@ var doAreaAmenities = {
 			marker.setIcon(AMENITIES['primary_location_icon']);
 			return false;
 		}
+		 // console.log(categories) ;
+		 // return false;
 		for ( var i = 0; i < categories.length ; i ++ ) {
 			var category = categories[i];
 			if (category[1] == markers[3]) {

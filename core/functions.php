@@ -1,7 +1,10 @@
-<?php  
-function get_post_amenities(){
+<?php
 
-	lt('get_post_amenities');
+/**
+ * Get all amenities 
+ * @return array() ['posts'] array of all amenities ['found_posts'] count of found posts
+ */
+function get_post_amenities(){
 
 	$args = array(
 		'post_type' => 'amenities',
@@ -13,45 +16,50 @@ function get_post_amenities(){
 
 	$results = new WP_Query( $args );
 	$return_array = array();
+	$return_array['posts'] = array();
 	$primary = array();
 	$primary_details;
+
 	if( $results->found_posts  > 0 ) {
 		
 		$return_array['found_posts'] = $results->found_posts;
-		$primary_location_id = get_option('am_primary_location');
-		foreach( $results->posts as $post ) {
-			if ($post->ID != $primary_location_id) {
-				$post->amenity_address = get_post_meta($post->ID, 'address', true);
-				$post->amenity_latitude = get_post_meta($post->ID, 'latitude', true);
-				$post->amenity_longitude = get_post_meta($post->ID, 'longitude', true);
-				$post->place_id = get_post_meta($post->ID, 'place_id', true);
-				$post->amenity_category = set_post_tax_array(wp_get_post_terms( $post->ID, 'amenity_category' ));
-				$return_array['posts'][] = $post;
-			}
-			else {
-				$post->amenity_address = get_post_meta($primary_location_id, 'address', true);
-				$post->amenity_latitude = get_post_meta($primary_location_id, 'latitude', true);
-				$post->amenity_longitude = get_post_meta($primary_location_id, 'longitude', true);
-				$post->place_id = get_post_meta($primary_location_id, 'place_id', true);
-				$post->amenity_category = set_post_tax_array(wp_get_post_terms( $primary_location_id, 'amenity_category' ));
-				$primary_details = $post;
-			}
-		}
 
-		// merge arrays
-		$return_array['posts'][] = $primary_details;
+		foreach( $results->posts as $post ) {
+			$return_array['posts'][] = get_amenity( $post );
+		}
 
 	}
 	else {
 		$return_array['posts'] = array('no dice');
 	}
+	
 	$return_array['posts'] = array_reverse($return_array['posts']); // primary location first item in array.
 	
 	return $return_array; 
 
-	// wp_reset_postdata();
+}
+
+function get_amenity( $amenity ) {
+
+	/*if amenity is post ID*/
+	if( ctype_digit($amenity) ) {
+		$post = get_post($amenity);
+	}
+	/*else if is post object*/
+	else {
+		$post = $amenity;
+	}
+
+	$post->amenity_address = get_post_meta($post->ID, 'address', true);
+	$post->amenity_latitude = get_post_meta($post->ID, 'latitude', true);
+	$post->amenity_longitude = get_post_meta($post->ID, 'longitude', true);
+	$post->place_id = get_post_meta($post->ID, 'place_id', true);
+	$post->amenity_category = set_post_tax_array(wp_get_post_terms( $post->ID, 'amenity_category' ));
+
+	return $post;
 
 }
+
 
 function get_sm_options() {
 	
@@ -90,20 +98,24 @@ function get_amenity_categories() {
 			'order' => 'ASC',
 			'posts_per_page' => -1
 	);
+	
 	$categories = get_terms('amenity_category', $args);
 	$return_array = array();
+
 	foreach($categories as $category) {
+
 		$cat_array = array();
 		$cat_array[]= $category->term_id;
 		$cat_array[]= $category->slug;
 
 		$cat_array[]= am_get_term_icon( $category->term_id );
 		$cat_array[]= am_get_term_color( $category->term_id );
-		$return_array[] = $cat_array;
-	}
-	return json_encode($return_array);
 
-	wp_reset_postdata();
+		$return_array[] = $cat_array;
+
+	}
+	
+	return json_encode($return_array);
 
 }
 
