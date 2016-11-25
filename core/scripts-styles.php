@@ -21,11 +21,17 @@ function am_add_scripts() {
 
 
 function load_admin_scripts($hook) {
+		global $post;
+
+		lt($post);
 
 		if( 'post-new.php' != $hook && 'post.php' != $hook ) {
 			return;
 		}
-		if ( !isset($_GET['post_type']) || ( isset($_GET['post_type']) && 'amenities' != $_GET['post_type'] ) ) {
+		if ( isset($_GET['post_type']) && 'amenities' != $_GET['post_type'] ) {
+			return;
+		}
+		if( !isset($_GET['post_type']) && 'amenities' != get_post_type($post->ID) ) {
 			return;
 		}
 

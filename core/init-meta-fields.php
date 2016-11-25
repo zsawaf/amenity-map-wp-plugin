@@ -25,6 +25,7 @@
 		<input type="hidden" id="am_lon" name="am_lon" value="<?php echo ( get_post_meta($post->ID, 'longitude' ) ) ? get_post_meta($post->ID, 'longitude', true )  : '' ?>">
 		<input type="hidden" id="am_place_id" name="am_place_id" value="<?php echo ( get_post_meta($post->ID, 'place_id' ) ) ? get_post_meta($post->ID, 'place_id',  true )  : '' ?>">
 		<input type="hidden" id="am_address" name="am_address" value="<?php echo ( get_post_meta($post->ID, 'address' ) ) ? get_post_meta($post->ID, 'address',  true )  : '' ?>">
+		<input type="hidden" id="full_address_title" name="full_address_title" value="<?php echo ( get_post_meta($post->ID, 'full_address_title' ) ) ? get_post_meta($post->ID, 'full_address_title',  true )  : '' ?>">
 
 		<div id="am_admin_map"></div>
 		<?php
@@ -49,6 +50,11 @@
         	$address = $_POST['am_address'];
         }
         update_post_meta($post_id, "address", $address);
+
+        if (isset($_POST['full_address_title'])) {
+        	$full_address_title = $_POST['full_address_title'];
+        }
+        update_post_meta($post_id, "full_address_title", $full_address_title);
 
         if (isset($_POST['am_lon'])) {
         	$lon = $_POST['am_lon'];

@@ -5,22 +5,21 @@ function initAutocomplete() {
 	var amenities = JSON.parse(AMENITIES['data']);
 	var primary_location;
 
-	if ( jQuery("#am_address").val() ) {
-		// Get place info 
+	/* if editing a post and address exists */
+	if ( jQuery("#full_address_title").val() ) {
+
 		var latitude = parseFloat(jQuery("#am_lat").val());
 		var longitude = parseFloat(jQuery("#am_lon").val());
 		var address = jQuery("#am_address").val();
+		var full_address_title = jQuery("#full_address_title").val();
 
-		jQuery("#pac-input").val(address);
-
+		jQuery("#pac-input").val(full_address_title);
 
 		var map = new google.maps.Map(document.getElementById('am_admin_map'), {
 			center: {lat: latitude, lng: longitude},
 			zoom: 13,
 			mapTypeId: 'roadmap'
 		});
-
-		console.log(address) ;
 
 		// Create a marker for each place.
 		markers.push(new google.maps.Marker({
@@ -30,18 +29,20 @@ function initAutocomplete() {
 		}));
 
 	}
+
+	/* else initialize the map */
 	else {
+
 		var latitude = parseFloat( ( amenities[1] == null ? "43.6532" : amenities[1] ) );
 		var longitude = parseFloat( ( amenities[2] == null ? "-79.3832" : amenities[2] ) );
 
-		// 
 		var map = new google.maps.Map(document.getElementById('am_admin_map'), {
 			center: {lat: latitude, lng: longitude},
 			zoom: 13,
 			mapTypeId: 'roadmap'
 		});
-	}
 
+	}
 
 	// Create the search box and link it to the UI element.
 	var input = document.getElementById('pac-input');
@@ -109,10 +110,14 @@ function initAutocomplete() {
 			var longitude = location.lng;
 			var place_id = place.place_id;
 
+			var full_address_title = place.name + ', ' + place.formatted_address;
+			 console.log(full_address_title) ;
+
 			jQuery('#am_lat').val(latitude);
 			jQuery("#am_lon").val(longitude);
 			jQuery("#am_place_id").val(place_id);
 			jQuery("#am_address").val(address);
+			jQuery("#full_address_title").val(full_address_title);
 		
 		});
 	
