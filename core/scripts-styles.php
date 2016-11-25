@@ -52,11 +52,10 @@ function load_admin_scripts($hook) {
 			return;
 		}
 
-
 		$maps_api_key = get_option('am_gm_api_key');
 		$maps_api_url = 'https://maps.googleapis.com/maps/api/js?key='.$maps_api_key.'&libraries=places&callback=initAutocomplete';
 
-		wp_register_script('am_admin_js', AMENITY_URL.'/assets/js/am.js', array( 'jquery'), null, true);
+		wp_register_script('am_admin_js', AMENITY_URL.'/assets/js/am-admin-scripts.js', array( 'jquery'), null, true);
 			wp_localize_script('am_admin_js', 
 				'AMENITIES', 
 				array( 
@@ -67,7 +66,7 @@ function load_admin_scripts($hook) {
 		wp_enqueue_script('am_admin_js');
 
 		wp_enqueue_script('am-admin-google-maps', $maps_api_url, array('am_admin_js'), null, true );
-		wp_enqueue_style('am_admin_css', AMENITY_URL. '/assets/css/admin.css');
+		wp_enqueue_style('am_admin_styles', AMENITY_URL. '/assets/css/am-admin-styles.css');
 		
 }
 add_action( 'admin_enqueue_scripts', 'load_admin_scripts' );
