@@ -1,7 +1,7 @@
 <?php  
 function get_post_amenities(){
 
-	global $post;
+	lt('get_post_amenities');
 
 	$args = array(
 		'post_type' => 'amenities',
@@ -11,30 +11,50 @@ function get_post_amenities(){
 	);
 
 	$results = new WP_Query( $args );
-	$array = array();
-
+	$return_array = array();
+	$primary = array();
+	$primary_details;
 	if( $results->found_posts  > 0 ) {
 		
-		$array['found_posts'] = $results->found_posts;
-
+		$return_array['found_posts'] = $results->found_posts;
+		$primary_location_id = get_option('am_primary_location');
 		foreach( $results->posts as $post ) {
-			$post->amenity_address = get_post_meta($post->ID, 'address', true);
-			$post->amenity_latitude = get_post_meta($post->ID, 'latitude', true);
-			$post->amenity_longitude = get_post_meta($post->ID, 'longitude', true);
-			$post->place_id = get_post_meta($post->ID, 'place_id', true);
-			$post->amenity_category = set_post_tax_array(wp_get_post_terms( $post->ID, 'amenity_category' ));
-			$array['posts'][] = $post;
+			if ($post->ID != $primary_location_id) {
+				$post->amenity_address = get_post_meta($post->ID, 'address', true);
+				$post->amenity_latitude = get_post_meta($post->ID, 'latitude', true);
+				$post->amenity_longitude = get_post_meta($post->ID, 'longitude', true);
+				$post->place_id = get_post_meta($post->ID, 'place_id', true);
+				$post->amenity_category = set_post_tax_array(wp_get_post_terms( $post->ID, 'amenity_category' ));
+				$return_array['posts'][] = $post;
+			}
+			else {
+				$post->amenity_address = get_post_meta($primary_location_id, 'address', true);
+				$post->amenity_latitude = get_post_meta($primary_location_id, 'latitude', true);
+				$post->amenity_longitude = get_post_meta($primary_location_id, 'longitude', true);
+				$post->place_id = get_post_meta($primary_location_id, 'place_id', true);
+				$post->amenity_category = set_post_tax_array(wp_get_post_terms( $primary_location_id, 'amenity_category' ));
+				$primary_details = $post;
+			}
 		}
+
+		// merge arrays
+		$return_array['posts'][] = $primary_details;
 
 	}
 	else {
-		$array['posts'] = array('no dice');
+		$return_array['posts'] = array('no dice');
 	}
-	return $array;
+	$return_array['posts'] = array_reverse($return_array['posts']); // primary location first item in array.
+	
+	return $return_array; 
+
+	// wp_reset_postdata();
+
 }
 
 function get_sm_options() {
-	global $post;
+	
+	lt('get_sm_options');
 
 	$args = array(
 		'post_type' => 'single_maps',
@@ -56,10 +76,15 @@ function get_sm_options() {
 	}
 
 	return json_encode($array);
+
+	wp_reset_postdata();
+
 }
 
 function get_amenity_categories() {
-	global $post;
+
+	lt('get_amenity_categories');
+
 	$args = array(
 		'post_type' => 'amenities',
 		'orderby' => 'name',
@@ -78,9 +103,15 @@ function get_amenity_categories() {
 		$return_array[] = $cat_array;
 	}
 	return json_encode($return_array);
+
+	wp_reset_postdata();
+
 }
 
 function get_map_styles() {
+
+	lt('get_map_styles');
+
 	$return_array = array();
 	$return_array['background_color'] = get_option('am_infobox_background');
 	$return_array['color'] = get_option('am_infobox_color');
@@ -91,10 +122,12 @@ function get_map_styles() {
 }
 
 function get_infobox_display_options() {
+	lt('get_infobox_display_options');
 	$return_array = array();
 	$return_array[]= get_option('am_infobox_address');
 	$return_array[]= get_option('am_infobox_phone');
 	$return_array[]= get_option('am_infobox_website');
+	$return_array[]= get_option('am_infobox_card');
 
 	return json_encode($return_array);
 }
@@ -103,6 +136,7 @@ function get_infobox_display_options() {
 *	Get the primary location
 */
 function get_primary_location() {
+	lt('get_primary_location');
 	$primary_location_id = get_option('am_primary_location');
 	$latitude = get_post_meta($primary_location_id)['latitude'][0];
 	$longitude = get_post_meta($primary_location_id)['longitude'][0];
@@ -145,13 +179,13 @@ function display_amenity_category_menu() { ?>
 
 <?php }
 
-if( !function_exists('lt') ) {
-	function lt( $data ) { ?>
-		<script>
-			console.log( <?php echo json_encode($data) ?> );
-		</script>
-	<?php }
-}
+
+function am_lt( $data ) { ?>
+	<script>
+		console.log( <?php echo json_encode($data) ?> );
+	</script>
+<?php }
+
 
 
 

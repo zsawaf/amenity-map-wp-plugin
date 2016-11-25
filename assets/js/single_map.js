@@ -11,7 +11,7 @@ class Map {
 		this.icon = options.icon;
 		this.marker = null;
 		this.map = null;
-
+		this.isDraggable = $(document).width() > 768 ? true : false;
 		this.createMap();
 		this.createPin();
 	}
@@ -21,7 +21,9 @@ class Map {
 		this.map = new google.maps.Map(document.getElementById('am_single_map'), {
 			zoom: 15,
 			center: this.coords,
-			styles: this.map_styles
+			styles: this.map_styles,
+			draggable: this.isDraggable,
+			scrollwheel: false,
 		});
 	}
 

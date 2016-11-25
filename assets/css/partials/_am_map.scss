@@ -26,6 +26,28 @@
 	}
 }
 
+.am_map.am_relative {
+	position: relative;
+	#am_card {
+		padding: 40px;
+		position: absolute;
+		top: 50%;
+		left: 0;
+		transform: translateY(-50%);
+		background-color: #111;
+		color: #fff;
+		height: auto;
+		h3 {
+			font-family: inherit;
+			text-transform: uppercase;
+		}
+		p {
+			font-size: 0.85em;
+			max-width: 200px;
+		}
+	}
+}
+
 .am {
 	width: 100%;
 	.am_navigation {

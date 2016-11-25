@@ -208,13 +208,17 @@
 	function am_sm_meta_fields($post) {
 		wp_nonce_field(basename(__FILE__), "meta-box-nonce"); 
 		?>
-		<input id="sm_latitude" placeholder="Latitude" type="text" name="sm_latitude" value="<?php echo ( get_post_meta($post->ID, 'sm_latitude' ) ) ? get_post_meta($post->ID, 'sm_latitude', true )  : '' ?>">
+		<label for="sm_latitude">Latitude: </label>
+		<input id="sm_latitude" placeholder="Latitude" type="text" name="sm_latitude" value="<?php echo ( get_post_meta($post->ID, 'sm_latitude' ) ) ? get_post_meta($post->ID, 'sm_latitude', true )  : '' ?>"><br>
+		
+		<label for="sm_longitude">Longitude: </label>
+		<input id="sm_longitude" placeholder="Longitude" type="text" name="sm_longitude" value="<?php echo ( get_post_meta($post->ID, 'sm_longitude' ) ) ? get_post_meta($post->ID, 'sm_longitude', true )  : '' ?>"><br>
 
-		<input id="sm_longitude" placeholder="Longitude" type="text" name="sm_longitude" value="<?php echo ( get_post_meta($post->ID, 'sm_longitude' ) ) ? get_post_meta($post->ID, 'sm_longitude', true )  : '' ?>">
+		<label for="sm_map_styles">Map Styles: </label>
+		<textarea id="sm_map_styles" placeholder="Map Styles" type="text" name="sm_map_styles" value=""><?php echo ( get_post_meta($post->ID, 'sm_map_styles' ) ) ? get_post_meta($post->ID, 'sm_map_styles', true )  : 'Map Styles' ?></textarea><br>
 
-		<textarea id="sm_map_styles" placeholder="Map Styles" type="text" name="sm_map_styles" value=""><?php echo ( get_post_meta($post->ID, 'sm_map_styles' ) ) ? get_post_meta($post->ID, 'sm_map_styles', true )  : 'Map Styles' ?></textarea>
-
-		<input id="sm_map_icon" placeholder="Map Icon" type="text" name="sm_map_icon" value="<?php echo ( get_post_meta($post->ID, 'sm_map_icon' ) ) ? get_post_meta($post->ID, 'sm_map_icon', true )  : '' ?>">
+		<label for="sm_map_icon">Map Icon: </label>
+		<input id="sm_map_icon" placeholder="Map Icon" type="text" name="sm_map_icon" value="<?php echo ( get_post_meta($post->ID, 'sm_map_icon' ) ) ? get_post_meta($post->ID, 'sm_map_icon', true )  : '' ?>"><br>
 		<?php
 	}
 
