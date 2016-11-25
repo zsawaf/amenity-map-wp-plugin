@@ -5,7 +5,7 @@
 
 	// address picker
 	function register_address_meta_box() {
-	    add_meta_box( 'am_meta_address', __( 'Amenity Address', 'textdomain' ), 'address_picker_callback', 'amenities' );
+	    add_meta_box( 'am_meta_address', __( 'Amenity Address', 'textdomain' ), 'address_picker_callback', array( 'amenities', 'single_maps' ));
 	}
 	add_action( 'add_meta_boxes', 'register_address_meta_box' );
 	 
@@ -214,12 +214,12 @@
 	function am_sm_meta_fields($post) {
 		wp_nonce_field(basename(__FILE__), "meta-box-nonce"); 
 		?>
-		<label for="sm_latitude">Latitude: </label>
+<!-- 		<label for="sm_latitude">Latitude: </label>
 		<input id="sm_latitude" placeholder="Latitude" type="text" name="sm_latitude" value="<?php echo ( get_post_meta($post->ID, 'sm_latitude' ) ) ? get_post_meta($post->ID, 'sm_latitude', true )  : '' ?>"><br>
-		
-		<label for="sm_longitude">Longitude: </label>
+ -->		
+<!-- 		<label for="sm_longitude">Longitude: </label>
 		<input id="sm_longitude" placeholder="Longitude" type="text" name="sm_longitude" value="<?php echo ( get_post_meta($post->ID, 'sm_longitude' ) ) ? get_post_meta($post->ID, 'sm_longitude', true )  : '' ?>"><br>
-
+ -->
 		<label for="sm_map_styles">Map Styles: </label>
 		<textarea id="sm_map_styles" placeholder="Map Styles" type="text" name="sm_map_styles" value=""><?php echo ( get_post_meta($post->ID, 'sm_map_styles' ) ) ? get_post_meta($post->ID, 'sm_map_styles', true )  : 'Map Styles' ?></textarea><br>
 

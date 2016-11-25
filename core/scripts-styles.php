@@ -28,10 +28,10 @@ function load_admin_scripts($hook) {
 		if( 'post-new.php' != $hook && 'post.php' != $hook ) {
 			return;
 		}
-		if ( isset($_GET['post_type']) && 'amenities' != $_GET['post_type'] ) {
+		if ( isset($_GET['post_type']) && ( 'amenities' != $_GET['post_type']  &&  'single_maps' != $_GET['post_type']) ) {
 			return;
 		}
-		if( !isset($_GET['post_type']) && 'amenities' != get_post_type($post->ID) ) {
+		if( !isset($_GET['post_type']) && ( 'amenities' != get_post_type($post->ID) &&  'single_maps' != get_post_type($post->ID)  ) ) {
 			return;
 		}
 
