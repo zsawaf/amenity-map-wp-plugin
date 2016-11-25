@@ -145,13 +145,13 @@ function display_amenity_category_menu() { ?>
 
 <?php }
 
-
-function lt( $data ) { ?>
-	<script>
-		console.log( <?php echo json_encode($data) ?> );
-	</script>
-<?php }
-
+if( !function_exists('lt') ) {
+	function lt( $data ) { ?>
+		<script>
+			console.log( <?php echo json_encode($data) ?> );
+		</script>
+	<?php }
+}
 
 
 
