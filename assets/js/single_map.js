@@ -4,9 +4,13 @@ class Map {
 		// filter all options and get the selected one.
 		var all_options = JSON.parse(OPTIONS['data']);
 		var options = this.filterMaps(all_options);
-
+		 console.log(all_options);
+		 console.log(options);
 		// init all variables
-		this.coords = {lat: parseFloat(options.latitude), lng: parseFloat(options.longitude)};
+		this.coords = {
+			lat: parseFloat(options.latitude), 
+			lng: parseFloat(options.longitude)
+		};
 		this.map_styles = JSON.parse(options['map_style']);
 		this.icon = options.icon;
 		this.marker = null;

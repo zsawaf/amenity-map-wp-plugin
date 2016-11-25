@@ -5,7 +5,7 @@
 
 	// address picker
 	function register_address_meta_box() {
-	    add_meta_box( 'am_meta_address', __( 'Amenity Address', 'textdomain' ), 'address_picker_callback', array( 'amenities', 'single_maps' ));
+	    add_meta_box( 'am_meta_address', __( 'Address', 'textdomain' ), 'address_picker_callback', array( 'amenities', 'single_maps' ));
 	}
 	add_action( 'add_meta_boxes', 'register_address_meta_box' );
 	 
@@ -238,21 +238,21 @@
         $map_styles = "";
         $icon = "";
 
-        if (isset($_POST['sm_latitude'])) {
-        	$latitude = $_POST['sm_latitude'];
-        }
-        update_post_meta($post_id, "sm_latitude", $latitude);
+        // if (isset($_POST['sm_latitude'])) {
+        // 	$latitude = $_POST['sm_latitude'];
+        // }
+        // update_post_meta($post_id, "sm_latitude", $latitude);
 
-        if (isset($_POST['sm_longitude'])) {
-        	$longitude = $_POST['sm_longitude'];
-        }
+        // if (isset($_POST['sm_longitude'])) {
+        // 	$longitude = $_POST['sm_longitude'];
+        // }
 
         if (isset($_POST['sm_map_styles'])) {
         	$map_styles = $_POST['sm_map_styles'];
         }
-        update_post_meta($post_id, 'sm_longitude', $longitude);
+        // update_post_meta($post_id, 'sm_longitude', $longitude);
 
-        update_post_meta($post_id, "sm_map_styles", $map_styles);
+        // update_post_meta($post_id, "sm_map_styles", $map_styles);
 
         if (isset($_POST['sm_map_icon'])) {
         	$icon = $_POST['sm_map_icon'];

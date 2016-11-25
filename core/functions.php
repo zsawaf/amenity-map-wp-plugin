@@ -54,8 +54,6 @@ function get_post_amenities(){
 
 function get_sm_options() {
 	
-	lt('get_sm_options');
-
 	$args = array(
 		'post_type' => 'single_maps',
 		'posts_per_page' => -1
@@ -65,14 +63,16 @@ function get_sm_options() {
 	$array = array();
 
 	foreach($results->posts as $post) {
+
 		$single_map_options = array();
-		$single_map_options["latitude"] = get_post_meta($post->ID, 'sm_latitude', true);
-		$single_map_options["longitude"] = get_post_meta($post->ID, 'sm_longitude', true);
+		$single_map_options["latitude"] = get_post_meta($post->ID, 'am_lat', true);
+		$single_map_options["longitude"] = get_post_meta($post->ID, 'am_lon', true);
 		$single_map_options["map_style"] = get_post_meta($post->ID, 'sm_map_styles', true);
 		$single_map_options["icon"] = get_post_meta($post->ID, 'sm_map_icon', true);
 
 		$array[$post->ID] = $single_map_options;
 		$single_map_options = null;
+		
 	}
 
 	return json_encode($array);
@@ -82,8 +82,6 @@ function get_sm_options() {
 }
 
 function get_amenity_categories() {
-
-	lt('get_amenity_categories');
 
 	$args = array(
 		'post_type' => 'amenities',
@@ -110,8 +108,6 @@ function get_amenity_categories() {
 
 function get_map_styles() {
 
-	lt('get_map_styles');
-
 	$return_array = array();
 	$return_array['background_color'] = get_option('am_infobox_background');
 	$return_array['color'] = get_option('am_infobox_color');
@@ -119,24 +115,27 @@ function get_map_styles() {
 	$return_array['map_style'] = get_option('am_fancy_maps_settings');
 
 	return json_encode($return_array);
+
 }
 
 function get_infobox_display_options() {
-	lt('get_infobox_display_options');
+
 	$return_array = array();
+
 	$return_array[]= get_option('am_infobox_address');
 	$return_array[]= get_option('am_infobox_phone');
 	$return_array[]= get_option('am_infobox_website');
 	$return_array[]= get_option('am_infobox_card');
 
 	return json_encode($return_array);
+
 }
 
 /*
 *	Get the primary location
 */
 function get_primary_location() {
-	lt('get_primary_location');
+
 	$primary_location_id = get_option('am_primary_location');
 	$latitude = get_post_meta($primary_location_id)['latitude'][0];
 	$longitude = get_post_meta($primary_location_id)['longitude'][0];
@@ -149,7 +148,9 @@ function get_primary_location() {
 	$return_array[]= $longitude;
 	$return_array[]= get_post($primary_location_id)->post_name;
 	$return_array[]= $place_id;
+	
 	return json_encode($return_array);
+
 }
 
 function set_post_tax_array($terms) {

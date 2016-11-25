@@ -2,6 +2,7 @@ var $ = jQuery;
 
 console.log(AMENITIES);
 var doAreaAmenities = {
+
 	cat : 'all',
 	searchType : null,
 	termsContainer : null,
@@ -11,8 +12,10 @@ var doAreaAmenities = {
 	infoWindows : [],
 	style: [],
 	activeBox: null,
-    activeCategory: null,
+	activeCategory: null,
+
 	init : function( args ) {
+		
 		var self = this;
 		// replace map style with desired styles
 		this.amenities = AMENITIES;
@@ -102,20 +105,19 @@ var doAreaAmenities = {
 		this.filteredList = filteredList;
 	},
 
-	loopPostHtml : function( obj ) {
+	loopPostHtml : function() {
 		var self = this;
 		self.infoWindows = [];
 
 		var obj = this.filteredList;
-		if( obj.length < 1 ) {
-		}
-		else {
+
+		if( obj.length > 0 ) {
 
 			for( i = 0; i < obj.length; i++ ) {
 				var html = '';
 				var content = '';
 				// if(0){
-				if( typeof obj[i].amenity_latitude !== 'undefined' && typeof obj[i].amenity_longitude !== 'undefined' ) {
+				if( obj[i] && typeof obj[i].amenity_latitude !== 'undefined' && typeof obj[i].amenity_longitude !== 'undefined' ) {
 
 					if( obj[i].amenity_address.address != '' ) {
 						self.mapMarkers.push( [obj[i].post_name, obj[i].amenity_latitude, obj[i].amenity_longitude, obj[i]['amenity_category'][0], obj[i].place_id ] );

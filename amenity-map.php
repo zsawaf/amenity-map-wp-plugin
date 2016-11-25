@@ -50,6 +50,7 @@ function do_amentity_map() {
 	get_shortcode_scripts();
 
 	ob_start(); ?>
+	
 	<div class="am <?php echo get_option('am_display_setting')?>">
 		<div class="am_navigation">
 			<?php display_amenity_category_menu() ?>
@@ -87,6 +88,8 @@ function do_map($atts) {
 	$a = shortcode_atts( array(
 		'id' => '1',
 	), $atts, 'single_map' );
+
+	$map_post = get_post(array("ID" => $a['id']));
 
 	ob_start(); ?>
 	<div id="am_single_map"></div>
