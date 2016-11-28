@@ -92,10 +92,9 @@ function get_sm_options() {
 	$array = array();
 
 	foreach($results->posts as $post) {
-
 		$single_map_options = array();
-		$single_map_options["latitude"] = get_post_meta($post->ID, 'am_lat', true);
-		$single_map_options["longitude"] = get_post_meta($post->ID, 'am_lon', true);
+		$single_map_options["latitude"] = get_post_meta($post->ID, 'latitude', true);
+		$single_map_options["longitude"] = get_post_meta($post->ID, 'longitude', true);
 		$single_map_options["map_style"] = get_post_meta($post->ID, 'sm_map_styles', true);
 		$single_map_options["icon"] = get_post_meta($post->ID, 'sm_map_icon', true);
 
