@@ -5,17 +5,22 @@ var cat_accordian = {
 	returnHtml: '',
 
 	init: function(args) {
+		
 		var amentityCategories = CATEGORY_AMENITIES.categories;
 		this.amentityCategories = amentityCategories;
 		this.accordianList = args.accordianList;
 		this.loopHtml();
+		
 	},
 
 	loopHtml: function() {
+
 		var amentityCategories = this.amentityCategories;
+
 		for( var i in amentityCategories ) {
 			 this.setAmenityList( amentityCategories[i] );
 		}
+
 	},
 
 	setAmenityList: function( categoryAmenityList ) {
