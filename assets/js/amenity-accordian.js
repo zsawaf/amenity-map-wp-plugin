@@ -30,9 +30,9 @@ var cat_accordian = {
 		for( var i in categoryAmenityList.amenities ) {	
 			// console.log(categoryAmenityList.amenities);
 			var amenity = categoryAmenityList.amenities[i];
+			var place = self.getPlaceId(amenity);
 			var html = '';
 			html += '<li class="amenity-list-item amenity-' + amenity.ID  + '">' + amenity.post_title + '<li>';
-			var place = self.getPlaceId(amenity);
 		}
 		$catParent.find('ul').html(html);
 	},
@@ -40,7 +40,7 @@ var cat_accordian = {
 	getPlaceId: function(amenity) {
 		var place_id = amenity.place_id;
 		var self = this;
-
+		var return_place = null;
 		var service = new google.maps.places.PlacesService(document.createElement('div'));
 		console.log($(".amenity-list-item-"+amenity.ID)[0]);
 		var html;
@@ -48,9 +48,10 @@ var cat_accordian = {
 		  placeId: place_id
 		}, function(place, status) {
 			if (status === google.maps.places.PlacesServiceStatus.OK) {
-				console.log(place);
+				return_place = place;
 			}
 		});
+		return return_place;
 	}
 
 }
