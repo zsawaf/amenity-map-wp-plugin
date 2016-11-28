@@ -239,16 +239,23 @@ function display_amenity_category_menu() { ?>
 
 <?php }
 
-function display_amentiy_category_accordian() { ?>
+
+
+function display_amentiy_accordian() { ?>
 
 	<?php $terms = get_terms('amenity_category', array('hide_empty' => false)) ?>
-	<ul class="amenities-list clearfix">
-		<?php foreach ($terms as $key => $term): ?>
-		<li class="side-nav-item term-<?php echo $term->term_id; ?> <?php echo $term->slug ?>"><a href="#" data-term-slug="<?php echo $term->slug; ?>"><span><?php echo $term->name; ?></span></a></li>
-		<?php endforeach ?>
+	<ul class="amenities-list clearfix amenity-accordian">
+	<?php foreach ($terms as $key => $term): ?>
+		<li class="side-nav-item term-<?php echo $term->term_id; ?> <?php echo $term->slug ?>" id="amenity-category-<?php echo $term->term_id; ?>">
+			<a href="#" data-term-slug="<?php echo $term->slug; ?>"><span><?php echo $term->name; ?></span></a>
+			<ul class="sub-list"></ul>
+		</li>
+	<?php endforeach ?>
 	</ul>
-	
-}
+
+<?php }
+
+
 
 
 

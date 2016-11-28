@@ -12,6 +12,7 @@ function am_add_scripts() {
 	wp_register_style( 'am-amenities-map-style', AMENITY_URL.'/assets/css/styles.css' );
 
 	wp_register_script('am-amenities-map-script', AMENITY_URL.'/assets/js/map.js', array('jquery', 'am-infobox'));
+	wp_register_script('amenity-accordian', AMENITY_URL.'/assets/js/amenity-accordian.js', array('jquery'));
 
 	wp_register_script('am-sm-script', AMENITY_URL.'/assets/js/single_map.js', array('jquery'));
 
@@ -76,7 +77,13 @@ function enqueue_am_scripts() {
 		)
 	);
 
+	wp_localize_script('amenity-accordian', 'CATEGORY_AMENITIES', array(
+			'categories' => get_amenities_by_categories(),
+		)
+	);
+
 	wp_enqueue_script('am-google-maps');
+	wp_enqueue_script('amenity-accordian');
 	wp_enqueue_script('am-amenities-map-script');
 	wp_enqueue_script('am-infobox');
 	wp_enqueue_script('am-sm-script');

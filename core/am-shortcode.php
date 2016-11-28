@@ -66,9 +66,19 @@ add_shortcode('single_map', 'do_map');
 
 function do_amenity_accordian() {
 
+	enqueue_am_scripts();
+
 	ob_start(); ?>
 	
-	<?php display_amentiy_category_accordian(); ?>
+	<?php display_amentiy_accordian(); ?>
+
+	<script>
+		jQuery(document).ready(function(){
+			cat_accordian.init({
+				accordianList: $(".amenity-accordian")
+			});
+		});
+	</script>
 
 	<?php
 	return ob_get_clean();	
