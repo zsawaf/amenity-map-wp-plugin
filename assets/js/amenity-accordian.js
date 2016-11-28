@@ -25,8 +25,6 @@ var cat_accordian = {
 
 	setAmenityList: function( categoryAmenityList ) {
 		 
-		 // console.log(categoryAmenityList);
-
 		var $catParent = this.accordianList.find('#amenity-category-' + categoryAmenityList.category.term_id );
 		for( var i in categoryAmenityList.amenities ) {
 			 
