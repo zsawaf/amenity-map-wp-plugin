@@ -26,13 +26,11 @@ var cat_accordian = {
 	setAmenityList: function( categoryAmenityList ) {
 		 
 		var $catParent = this.accordianList.find('#amenity-category-' + categoryAmenityList.category.term_id );
+		var html = '';
+
 		for( var i in categoryAmenityList.amenities ) {
-			 
-			 // console.log(categoryAmenityList.amenities);
-			 
 			 var amenity = categoryAmenityList.amenities[i];
-			 var html = '';
-			 html += '<li class="amenity-list-item amenity-' + amenity.ID  + '">' + amenity.post_title + '<li>';
+			 html += '<li class="amenity-list-item amenity-' + amenity.ID  + '">' + amenity.post_title + '</li>';
 		}
 		$catParent.find('ul').html(html);
 	}
