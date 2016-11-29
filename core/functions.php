@@ -251,7 +251,7 @@ function display_amentiy_accordian() { ?>
 	<ul class="amenities-list clearfix amenity-accordian">
 	<?php foreach ($terms as $key => $term): ?>
 		<li class="side-nav-item term-<?php echo $term->term_id; ?> <?php echo $term->slug ?>" id="amenity-category-<?php echo $term->term_id; ?>">
-			<a href="#" data-term-slug="<?php echo $term->slug; ?>"><span><?php echo $term->name; ?></span><i><img src="http://clients.blackjetinteractive.com/beanstalk/2016/yongestclair/wp-content/uploads/2016/11/mobile-menu-toggle.svg"></i></a>
+			<a href="#" data-term-slug="<?php echo $term->slug; ?>"><span><?php echo $term->name; ?></span><i></i></a>
 			<ul class="sub-list"></ul>
 		</li>
 	<?php endforeach ?>

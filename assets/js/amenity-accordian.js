@@ -6,13 +6,32 @@ var cat_accordian = {
 
 	init: function(args) {
 		
+		var self = this;
 		var amentityCategories = CATEGORY_AMENITIES.categories;
+		var vw = $(window).width();
+
+		this.initialized = false;
+		this.active_category = null;
+
 		this.amentityCategories = amentityCategories;
 		this.accordianList = args.accordianList;
-		this.accordionClick();
-		this.amenityClick();
-		this.loopHtml();
+
+		$(window).resize(function(){
+			vw = $(window).width();
+			self.callInit(vw);
+		});
+
+		this.callInit(vw);
 		
+	},
+
+	callInit: function(vw) {
+		if (vw <= 768 && !this.initialized) {
+			this.accordionClick();
+			this.amenityClick();
+			this.loopHtml();
+			this.initialized = true;
+		}
 	},
 
 	loopHtml: function() {
@@ -49,7 +68,10 @@ var cat_accordian = {
 				$catParent.find('.sub-list').append('<li class="amenity-list-item amenity-' + amenity.ID  + '">' + self.getPlaceHtml(place) + '</li>');
 			}
 			else {
-				console.log(status);
+				// I DON'T LIKE THIS
+				setTimeout(function(){
+					self.getPlaceId(amenity, $catParent);
+				}, 200);
 			}
 		});
 	},
@@ -63,13 +85,13 @@ var cat_accordian = {
 		var hours_string = '';
 		for (var i=0; i < opening_hours.length; i++) hours_string += '<li>'+opening_hours[i]+'</li>';
 
-		html = '<a class="amenity" href="#">'+place.name+'</a><ul class="place-details"><li>'+address+'</li>'+'<li>'+phone+'</li>'+'<li><a target="_blank" href="'+website+'">'+website+'</a></li>'+'<li class="opening-hours"><ul>'+hours_string+'</ul></ul>';
+		html = '<a class="amenity" href="#"><span>'+place.name+'</span><i class="inner-icon"></i></a><ul class="place-details"><li>'+address+'</li>'+'<li>'+phone+'</li>'+'<li><a target="_blank" href="'+website+'">'+website+'</a></li>'+'<li class="opening-hours"><ul>'+hours_string+'</ul></ul>';
 
 		return html;
 	},
 
 	accordionClick: function() {
-		$(document).on('click', '.amenities-list .side-nav-item a', function(e){
+		$(document).on('click', '.amenities-list .side-nav-item > a', function(e){
 			e.preventDefault();
 			var $parent = $(this).parent();
 			var $sub_list = $parent.find('.sub-list');
@@ -77,16 +99,20 @@ var cat_accordian = {
 			if ($sub_list.hasClass('expanded')) {
 				$sub_list.slideUp(300, function(){
 					$(this).removeClass('expanded');
+					$(this).parent().find('> a > i').removeClass('minus');
 				});
 			}
 			else {
-				$(".amenities-list .sub-list").removeClass('expanded');
-				$(".amenities-list .sub-list").slideUp(300, function(){
-					$sub_list.slideDown(300, function(){
-						$(this).addClass('expanded');
-					});
+				if (self.active_category) {
+					self.active_category.removeClass('expanded');
+					self.active_category.parent().find('> a > i').removeClass('minus');
+					self.active_category.slideUp(300);
+				}
+				$sub_list.slideDown(300, function(){
+					$(this).addClass('expanded');
+					$(this).parent().find('> a > i').addClass('minus');
+					self.active_category = $sub_list;
 				});
-				
 			}
 		});
 	},
@@ -98,15 +124,18 @@ var cat_accordian = {
 			var $parent = $(this).parent();
 			var $place_details = $(this).find('.place-details');
 			if ($place_details.hasClass('expanded')) {
-				$place_details.slideUp(300, function(){
+				$place_details.slideUp(150, function(){
 					$(this).removeClass('expanded');
 					$elem.removeClass('expanded');
+					$elem.find('.amenity > i').removeClass('minus');
+
 				});
 			}
 			else {
-				$place_details.slideDown(300, function(){
+				$place_details.slideDown(150, function(){
 					$(this).addClass('expanded');
 					$elem.addClass('expanded');
+					$elem.find('.amenity > i').addClass('minus');
 				});
 			}
 		});

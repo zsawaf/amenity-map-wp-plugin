@@ -16,8 +16,10 @@ var doAreaAmenities = {
 	init : function( args ) {
 		
 		var self = this;
+		var vw = $(window).width();
 
 		this.amenities = AMENITIES;
+		this.initialized = false;
 
 		this.termsContainer = args.termsContainer; // container of tax terms
 		this.loading = args.loading; // selector for loading div
@@ -27,17 +29,36 @@ var doAreaAmenities = {
 		this.map = null;
 		this.position = null;
 		this.static_card_appended = false;
-		this.isDraggable = $(document).width() > 768 ? true : false;
+		this.isDraggable = $(window).width() > 768 ? true : false;
 		this.style = JSON.parse(JSON.parse(AMENITIES['map_styles']).map_style);
 		this.infobox_style = JSON.parse(AMENITIES['map_styles']);
-		this.clickEvents();
 
-		setTimeout(function(){
-			self.doResults();
-		}, 3000);
+		$(window).resize(function(){
+			vw = $(window).width();
+			self.callInit(vw);
+		});
+		
+		this.callInit(vw);
 
 
 		/* OVERRIDE FOR STATIC INFOBOX */
+	},
+
+	/**
+	 * Calls amenity map methods
+	 * @param  {int} width [the width of the viewport]
+	 * @return {[type]}       [null]
+	 */
+	callInit: function(width) {
+		var self = this;
+
+		if (width > 768 && !this.initialized) {
+			this.clickEvents();
+			this.initialized = true;
+			setTimeout(function(){
+				self.doResults();
+			}, 3000);
+		}
 	},
 
 	/**
@@ -81,7 +102,6 @@ var doAreaAmenities = {
 	setFilteredResults : function() {
 		var self = this;
 		var amenities = this.amenities['data']['posts'];
-		 console.log(this.amenities);
 		var amenities_category = $(".am_navigation ul .active").attr("data-term-slug");
 
 		if('all' == this.cat) {
@@ -313,16 +333,24 @@ var doAreaAmenities = {
 		});
 	},
 
-	write_marker_html: function(details) {
+	write_marker_html: function(place) {
 		
 		var html = '';
 
-		html += '<h3 class="am_title">'+details.name+'</h3>';
-		html+= (this.infobox_options[0] == 1) ? '<p class="address">'+details.formatted_address+'</p>' : '';
-		html += '<div class="am_contact_info">';
-			html+= (this.infobox_options[1] == 1) ? '<p>'+details.formatted_phone_number+'</p>' : '';
-			html+= (this.infobox_options[2] == 1) ? '<p>'+details.website+'</p>' : '';
-		html += '</div>';
+		var address = (typeof place.formatted_address !== "undefined" ? place.formatted_address : '');
+		var phone = (typeof place.formatted_phone_number !== "undefined" ? place.formatted_phone_number : '');
+		var website = (typeof place.website !== "undefined" ? place.website : '');
+		var opening_hours = (typeof place.opening_hours !== "undefined" ? place.opening_hours.weekday_text : '');
+		var hours_string = '';
+		for (var i=0; i < opening_hours.length; i++) hours_string += '<li>'+opening_hours[i]+'</li>';
+		console.log(this.infobox_options);
+		html += '<h3 class="am_title">'+place.name+'</h3>';
+		html+= (this.infobox_options[0] == 1) ? '<p class="address">'+address+'</p>' : '';
+		html += '<table>';
+			html+= (this.infobox_options[1] == 1 && phone != '') ? '<tr><td class="key">Phone: </td><td>'+phone+'</td></tr>' : '';
+			html+= (this.infobox_options[2] == 1 && hours_string != '') ? '<tr><td class="key">Hours: </td><td><ul>'+hours_string+'</ul></td></tr>' : '';
+			html+= (this.infobox_options[2] == 1 && website != '') ? '<tr><td class="key">URL: </td><td><a href="'+website+'" target="_blank">'+website+'</a></td></tr>' : '';
+		html += '</table>';
 		
 		return html;
 
