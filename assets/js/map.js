@@ -303,8 +303,12 @@ var doAreaAmenities = {
 				// Automatically center the map fitting all markers on the screen
 			}
 
-			self.previous_marker.marker = markers_array[0];
+			var temp_marker = jQuery.extend({}, markers_array[0]);
+			
+			self.previous_marker.marker = temp_marker;
 			self.previous_marker.index = 0;
+
+			markers_array[0].setIcon(AMENITIES['active_icon']);
 
 			if( success > 0 ) {
 				this.map.fitBounds(bounds);
