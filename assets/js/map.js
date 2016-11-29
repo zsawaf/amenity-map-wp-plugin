@@ -20,6 +20,10 @@ var doAreaAmenities = {
 
 		this.amenities = AMENITIES;
 		this.initialized = false;
+		this.previous_marker = {
+			marker: null,
+			index: 0
+		};
 
 		this.termsContainer = args.termsContainer; // container of tax terms
 		this.loading = args.loading; // selector for loading div
@@ -68,6 +72,8 @@ var doAreaAmenities = {
 		var self = this;
 		this.termsContainer.find('a').on('click', function(e){
 			e.preventDefault();
+
+			self.static_card_appended = false;
 			var same_link = false;
 
 			self.searchType = 'tag';
@@ -232,16 +238,18 @@ var doAreaAmenities = {
 
 		google.maps.event.addListener(marker, 'click', (function(marker, i) {
 			return function() {
-				if( self.infoWindows[i] ) {
-	                self.activeCategory = markers[i][3];
-					self.activeBox = i;
-					for (var j=0; j<markers_array.length; j++) {
-						self.set_icons(markers[j], marker, self.categories);
-					}
-					// hover state icon
-					markers_array[i].setIcon(AMENITIES['active_icon']);
-					self.get_marker_html(markers[i], self.map, null, self.position, marker, true);
+				if (self.previous_marker.marker != null) {
+					console.log("Should be setting "+self.previous_marker.marker.title+"'s icon to "+self.previous_marker.marker.icon);
+					markers_array[self.previous_marker.index].setIcon(self.previous_marker.marker.icon);
 				}
+
+				var temp_marker = jQuery.extend({}, markers_array[i]);
+				self.previous_marker.marker = temp_marker;
+				self.previous_marker.index = i;
+
+				// active state icon
+				markers_array[i].setIcon(AMENITIES['active_icon']);
+				self.get_marker_html(markers[i], self.map, null, self.position, marker, true);
 			}
 		})(marker, i));
 	},
@@ -294,6 +302,9 @@ var doAreaAmenities = {
 				}
 				// Automatically center the map fitting all markers on the screen
 			}
+
+			self.previous_marker.marker = markers_array[0];
+			self.previous_marker.index = 0;
 
 			if( success > 0 ) {
 				this.map.fitBounds(bounds);
