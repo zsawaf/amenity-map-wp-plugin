@@ -343,13 +343,12 @@ var doAreaAmenities = {
 		var opening_hours = (typeof place.opening_hours !== "undefined" ? place.opening_hours.weekday_text : '');
 		var hours_string = '';
 		for (var i=0; i < opening_hours.length; i++) hours_string += '<li>'+opening_hours[i]+'</li>';
-		console.log(this.infobox_options);
 		html += '<h3 class="am_title">'+place.name+'</h3>';
 		html+= (this.infobox_options[0] == 1) ? '<p class="address">'+address+'</p>' : '';
 		html += '<table>';
 			html+= (this.infobox_options[1] == 1 && phone != '') ? '<tr><td class="key">Phone: </td><td>'+phone+'</td></tr>' : '';
 			html+= (this.infobox_options[2] == 1 && hours_string != '') ? '<tr><td class="key">Hours: </td><td><ul>'+hours_string+'</ul></td></tr>' : '';
-			html+= (this.infobox_options[2] == 1 && website != '') ? '<tr><td class="key">URL: </td><td><a href="'+website+'" target="_blank">'+website+'</a></td></tr>' : '';
+			html+= (this.infobox_options[3] == 1 && website != '') ? '<tr><td class="key">URL: </td><td><a href="'+website+'" target="_blank">'+website+'</a></td></tr>' : '';
 		html += '</table>';
 		
 		return html;
