@@ -239,7 +239,6 @@ var doAreaAmenities = {
 		google.maps.event.addListener(marker, 'click', (function(marker, i) {
 			return function() {
 				if (self.previous_marker.marker != null) {
-					console.log("Should be setting "+self.previous_marker.marker.title+"'s icon to "+self.previous_marker.marker.icon);
 					markers_array[self.previous_marker.index].setIcon(self.previous_marker.marker.icon);
 				}
 
@@ -262,7 +261,14 @@ var doAreaAmenities = {
 			styles: this.style,
 			mapTypeId: 'roadmap',
 			scrollwheel: false,
-			center:new google.maps.LatLng(43.8156,-79.3108)
+			center:new google.maps.LatLng(43.8156,-79.3108),
+			zoomControl: true,
+			mapTypeControl: false,
+			scaleControl: false,
+			streetViewControl: false,
+			rotateControl: false,
+			fullscreenControl: false,
+			scrollwheel: false,
 		};
 
 		this.map = new google.maps.Map(document.getElementById('am_map'), mapOptions);
@@ -311,17 +317,30 @@ var doAreaAmenities = {
 			markers_array[0].setIcon(AMENITIES['active_icon']);
 
 			if( success > 0 ) {
-				this.map.fitBounds(bounds);
+				if (this.infobox_options[3] == "1") {
+					// add offset to bounds
+					
+					this.map.fitBounds(bounds);
+					self.offsetBounds(-100, 0);
+				}
+				else {
+					this.map.fitBounds(bounds);
+				}
+				
 				google.maps.event.addDomListener(window, 'load', self.initialize);
+
+				// google.maps.event.addListenerOnce(this.map,"projection_changed", function() {
+				// 	self.offsetCenter(900, 0);
+				// });
 			}
 		}
 	},
 
 	/* HELPER METHODS */
-	primary_location_index: function(markers) {
-		jQuery.each(markers, function(k, v){
-			console.log(v);
-		});
+	offsetBounds: function(left, top) {
+		this.map.panBy(left, top);
+
+
 	},
 
 	get_marker_html: function(o_place, map, infobox, position, marker, flag) {
